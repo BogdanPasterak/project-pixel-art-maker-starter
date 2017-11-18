@@ -1,0 +1,22 @@
+Polish translation  /*Tłumaczenie na polski*/
+
+JavaScript Loops and Functions
+/*Pętle i funkcje JavaScript*/
+  The student implements while and for loops to clear and create the grid dynamically.
+  /*Student implementuje pętle 'while' i 'for', aby wyczyścić i utworzyć siadkę dynamicznie.*/
+  Student successfully implements makeGrid() and call it upon the user submitting the grid size.
+  /*Student implementuje makeGrid () i wywołuje na użytkowniku przesyłającym rozmiar siatki.*/
+JavaScript Selectors and Event Listeners
+/*Selektory JavaScript i detektory zdarzeń*/
+  The student uses selectors to access user input values and select elements in the DOM.
+  /*St. używa selektorów, aby uzyskać dostęp do wartości wejściowych uż. i wybrać elementy w DOM.*/
+  The student uses event listeners to trigger grid creation, and modify the grid colors.
+  /*Uczeń używa detektorów zdarzeń do włączania tworzenia siatki i modyfikowania kolorów siatki.*/
+
+Code Quality
+/*Jakość kodu*/
+  Code is ready for review, meaning new lines and indentation are used for easy readability.
+  /*Kod jest gotowy do przeglądu, co oznacza, że nowe linie i wcięcia są używane dla łatwej czytelności.*/
+  JavaScript code follows Udacity's styleguide.
+  /*Kod JavaScript podąża za zasadami stylu firmy Udacity.*/
+  ( https://udacity.github.io/frontend-nanodegree-styleguide/javascript.html )
