@@ -1,15 +1,23 @@
 // Select color input
+var selectColor;
+var widthGrid = 0, heightGrid = 0;
 // Select size input
+$( function () {
+  selectColor = $('#colorPicker').val();
+  $('#sizePicker').submit(function ( event ) {
+    makeGrid();
+    event.preventDefault();
+  });
+
+})
 
 // When size is submitted by the user, call makeGrid()
-document.getElementById('sizePicker').setAttribute('onsubmit','return makeGrid()');
-
-function makeGrid() {
-  let height = document.getElementById('input_height').value;
-  let width = document.getElementById('input_width').value;
-  const target = document.getElementById('pixel_canvas');
-  let tr, td
-
+const makeGrid = () => {
+  let height = $('#input_height').val();
+  let width = $('#input_width').val();
+  const target = $('#pixel_canvas');
+  let tr, td;
+/*
   target.innerHTML = ('');
   for( let row = 0; row < height; row += 1){
     tr = document.createElement('tr');
@@ -19,7 +27,12 @@ function makeGrid() {
     }
     target.appendChild(tr);
   }
-
+*/
   console.log( height + '  ' + width );
-  return false;
-}
+  //return false;
+};
+/*
+$( function () {
+  $('#sizePicker').attr('onsubmit','return makeGrid()');
+})
+*/
