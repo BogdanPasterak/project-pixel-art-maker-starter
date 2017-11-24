@@ -1,6 +1,6 @@
 // Global variable
 let selectColor;
-let widthGrid = 0, heightGrid = 0;
+//let widthGrid = 0, heightGrid = 0;
 
 // TODO: run once until DOM is ready
 $( function () {
@@ -19,9 +19,14 @@ $( function () {
     $(this).css('background-color', selectColor);
   });
 
-  // TODO: event
+  // TODO: event for change color
   $('#colorPicker').change( function () {
     selectColor = $(this).val();
+  });
+
+  // TODO: validation size of Grid
+  $('input[type="number"]').change( function () {
+    validateSize(this);
   });
 
 })
@@ -29,59 +34,62 @@ $( function () {
 // TODO: When size is submitted by the user, call makeGrid()
 // The grid is not built from scratch
 // replenishes missing pieces or removes unnecessary
+// existing drawing will not be erased !
 const makeGrid = () => {
   // local variable length i width chosen by user and 3 ancillary
   let height = $('#input_height').val();
   let width = $('#input_width').val();
   // idRow 'r003' and idCell 'r002c005'
-  let idRow, nodeRow, idCell;
+  let row = 0, idRow = 'r000', nodeRow = $('#r000');
+  let col, idCell, nodeCell;
   // local constans
   const target = $('#pixel_canvas');
-  const maxRow = (height > heightGrid) ? height : heightGrid;
-  const maxCol = (width > widthGrid) ? width : widthGrid;
 
   // loop for rows
-  for (let row = 0; row < maxRow; row += 1) {
-    idRow = 'r' + ( ( row < 10 ) ? '00' : ( row < 100 ) ? '0' : '' )  + row;
-    if ( $('#' + idRow).length ) {
-      // if the row exists
-      nodeRow = $('#' + idRow);
-      if ( row < height ) {
-        // if the row continues to exist check columns
-        for (let col = 0; col < maxCol; col +=1) {
-          // add td node to new row
-          idCell = idRow + 'c' + ( ( col < 10 ) ? '00' : ( col < 100 ) ? '0' : '' )  + col;
-          if ( $('#' + idCell).length ) {
-            // if the cell exists
-            if ( col >= width ) {
-              // and shouldn't be
-              $('#' + idCell).remove();
-            }
-          } else if ( col < width ) {
-            // if the row not exists should be create and add new node
-            nodeRow.append( $('<td id=\"' + idCell + '\"></td>') );
-          }
-        }
-      } else {
-        // delete the row
-        nodeRow.remove();
-        heightGrid -= 1;
-      }
+  do {
+    // delete the over numbers row
+    if ( row >= height ) {
+      nodeRow.remove();
+    // if it should be
     } else {
       // if the row not exists create and add new node
-      nodeRow = $('<tr id=\"' + idRow + '\"></tr>');
-      for (let col = 0; col < width; col +=1) {
-        // add cells node to new row
-        idCell = idRow + 'c' + ( ( col < 10 ) ? '00' : ( col < 100 ) ? '0' : '' )  + col;
-        nodeRow.append( $('<td id=\"' + idCell + '\"></td>') );
+      if ( ! nodeRow.length ) {
+        nodeRow = $('<tr id=\"' + idRow + '\"></tr>');
+        target.append(nodeRow);
       }
-      target.append(nodeRow);
-      heightGrid += 1;
-      //console.log('adding ' + nodeRow);
+      // loop for cells
+      col = 0;
+      idCell = idRow + 'c000';
+      nodeCell = $('#' + idCell);
+      do {
+        // delete the over numbers collumn
+        if ( col >= width ) {
+          nodeCell.remove();
+        // if the cell not exists create and add new node
+        } else if ( ! nodeCell.length ) {
+          nodeCell = $('<td id=\"' + idCell + '\"></td>');
+          nodeRow.append(nodeCell);
+        }
+        col += 1;
+        idCell = idRow + 'c' + add0(col);
+        nodeCell = $('#' + idCell);
+      } while ( col < width || nodeCell.length );
     }
-  }
+    //console.log(idRow);
+    row += 1;
+    idRow = 'r' + add0(row);
+    nodeRow = $('#' + idRow);
+  } while ( row < height || nodeRow.length );
+};
 
-  widthGrid = width;
-  //heightGrid = height;
-  //console.log( heightGrid + '  ' + widthGrid );
+const validateSize = (sender) => {
+  console.log('zmiana ' + $(sender).attr('id'));
+  //console.log( $('#div_canvas').position().top );
+  //console.log( $( document ).height() );
+  makeGrid();
+};
+
+// TODO: adding leading zeros
+const add0 = (number) => {
+  return ( ( number < 10 ) ? '00' : ( number < 100 ) ? '0' : '' ) + number.toString();
 };
