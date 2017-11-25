@@ -1,5 +1,17 @@
+html {
+  height: 100%;
+}
+
 body {
-    text-align: center;
+  margin: 0;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+}
+
+div {
+  flex: 0 1 auto;
 }
 
 h1 {
@@ -19,22 +31,33 @@ h2:first-of-type {
 table,
 tr,
 td {
-    border: 1px solid black;
+    border: 1px solid gray;
 }
 
 table {
     border-collapse: collapse;
     margin: 0 auto;
+    padding: 0;
+    background-color: white;
 }
 
 tr {
-    height: 20px;
+    height: 21px;
 }
 
 td {
     width: 20px;
+    padding: 0;
 }
 
 input[type=number] {
     width: 3em;
+}
+
+#div_canvas {
+  flex: 1 1 auto;
+  background-color: lightgray;
+  margin: 4px;
+  border: 2px solid grey;
+  padding: 0;
 }

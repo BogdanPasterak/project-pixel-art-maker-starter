@@ -7,11 +7,13 @@ $( function () {
   // inicialization variable
   selectColor = $('#colorPicker').val();
 
+/* no more form and submit
   // TODO: bind submit event to form and cancel submit action
   $('#sizePicker').submit( function (event) {
     makeGrid();
     event.preventDefault();
   });
+*/
 
   // TODO: adding event delegation to table on all cell
   $('#pixel_canvas').on('click', 'td', function () {
@@ -29,6 +31,20 @@ $( function () {
     validateSize(this);
   });
 
+  // TODO:
+  $('#input_hold').change( function () {
+    if ( $(this).is(':checked') ) {
+      $('#input_size').attr('readonly', true);
+      $('#input_size').css('background-color', 'lightgray');
+    } else {
+      $('#input_size').attr('readonly', false);
+      $('#input_size').removeAttr('style');
+    }
+  });
+
+  // initial drawing grid
+  validateSize($('#input_size'));
+
 })
 
 // TODO: When size is submitted by the user, call makeGrid()
@@ -44,6 +60,7 @@ const makeGrid = () => {
   let col, idCell, nodeCell;
   // local constans
   const target = $('#pixel_canvas');
+  const size = $('#input_size').val();
 
   // loop for rows
   do {
@@ -55,6 +72,7 @@ const makeGrid = () => {
       // if the row not exists create and add new node
       if ( ! nodeRow.length ) {
         nodeRow = $('<tr id=\"' + idRow + '\"></tr>');
+        nodeRow.css('height', parseInt(size) + 1);
         target.append(nodeRow);
       }
       // loop for cells
@@ -68,6 +86,7 @@ const makeGrid = () => {
         // if the cell not exists create and add new node
         } else if ( ! nodeCell.length ) {
           nodeCell = $('<td id=\"' + idCell + '\"></td>');
+          nodeCell.css('width', size);
           nodeRow.append(nodeCell);
         }
         col += 1;
@@ -82,14 +101,72 @@ const makeGrid = () => {
   } while ( row < height || nodeRow.length );
 };
 
+// TODO: supporting function for makeGrid
+// adding leading zeros to number to build id rows and cells
+const add0 = (number) => {
+  return ( ( number < 10 ) ? '00' : ( number < 100 ) ? '0' : '' ) + number.toString();
+};
+
+// TODO: validation of table dimensions
 const validateSize = (sender) => {
-  console.log('zmiana ' + $(sender).attr('id'));
-  //console.log( $('#div_canvas').position().top );
-  //console.log( $( document ).height() );
+  // constans variable for calculation
+  let size = parseInt($('#input_size').val());
+  let width = parseInt($('#input_width').val());
+  let height = parseInt($('#input_height').val());
+  const divW = parseInt($('#div_canvas').css('width'));
+  const divH = parseInt($('#div_canvas').css('height'));
+  // if imput size event
+  if ( $(sender).attr('id') == 'input_size' ) {
+    // wrong values
+    if ( size < 3 || size > 99 || isNaN(size) ) {
+      if ( size < 3 ) { size = 3; }
+      else if ( size > 99 ) { size = 99; }
+      else { size = parseInt($('#r000c000').css('width')); } // previous value
+      $(sender).val(size);
+      // alert in size
+    }
+    // too big
+    if ( size * width + 10 > divW ) {
+      size = ((divW - 11) / width) | 0; // Math.floor() but faster
+      $(sender).val(size);
+      // alert in width
+    }
+    if ( size * height + 10 > divH ) {
+      size = ((divH - 11) / height) | 0;
+      $(sender).val(size);
+      // alert in height
+    }
+    $('tr').css('height', size + 1); // one more for border
+    $('td').css('width', size);
+  // if imput width event
+  } else if ( $(sender).attr('id') == 'input_width' ) {
+    if ( width < 1 || width > 999 || isNaN(width) ) {
+      if ( width < 1 ) { width = 1; }
+      else if ( width > 999 ) { width = 999; }
+      else { width = getW($('td:last')) + 1; } // previous value
+      $(sender).val(width);
+      // alert in width
+    }
+    if ( size * width + 10 > divW ) {
+      width = ((divH - 11) / size) | 0;
+      $(sender).val(width);
+
+      // alert for width
+    }
+
+  } else if ( $(sender).attr('id') == 'input_height' ) {
+
+  }
+  // console.log(divW + '  ' + divH + '  ' + size);
   makeGrid();
 };
 
-// TODO: adding leading zeros
-const add0 = (number) => {
-  return ( ( number < 10 ) ? '00' : ( number < 100 ) ? '0' : '' ) + number.toString();
+// TODO:
+const getW = (cell) => {
+  return parseInt( $(cell)[0].id.substr(5, 3) );
+};
+
+// TODO:
+const getH = (cell) => {
+  return parseInt( $(cell)[0].id.substr(1, 3) );
 };
