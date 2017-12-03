@@ -74,6 +74,9 @@ const makeGrid = () => {
         nodeRow = $('<tr id=\"' + idRow + '\"></tr>');
         nodeRow.css('height', parseInt(size) + 1);
         target.append(nodeRow);
+      // } else if ( nodeRow.css('height') != parseInt(size) + 1) {
+      //   // corect size if need
+      //   nodeRow.css('height', parseInt(size) + 1);
       }
       // loop for cells
       col = 0;
@@ -88,6 +91,9 @@ const makeGrid = () => {
           nodeCell = $('<td id=\"' + idCell + '\"></td>');
           nodeCell.css('width', size);
           nodeRow.append(nodeCell);
+        // } else if ( nodeCell.css('width') != size ) {
+        //   // corect size
+        //   nodeCell.css('width', size);
         }
         col += 1;
         idCell = idRow + 'c' + add0(col);
@@ -104,7 +110,7 @@ const makeGrid = () => {
 // TODO: supporting function for makeGrid
 // adding leading zeros to number to build id rows and cells
 const add0 = (number) => {
-  return ( ( number < 10 ) ? '00' : ( number < 100 ) ? '0' : '' ) + number.toString();
+  return ((number < 10 )?'00':(number < 100)?'0' : '') + number.toString();
 };
 
 // TODO: validation of table dimensions
@@ -115,6 +121,7 @@ const validateSize = (sender) => {
   let height = parseInt($('#input_height').val());
   const divW = parseInt($('#div_canvas').css('width'));
   const divH = parseInt($('#div_canvas').css('height'));
+
   // if imput size event
   if ( $(sender).attr('id') == 'input_size' ) {
     // wrong values
@@ -126,18 +133,19 @@ const validateSize = (sender) => {
       // alert in size
     }
     // too big
-    if ( size * width + 10 > divW ) {
-      size = ((divW - 11) / width) | 0; // Math.floor() but faster
+    if ( (size + 1) * width + 1 > divW ) {
+      size = (((divW - 1) / width) | 0) - 1; // Math.floor() but faster
       $(sender).val(size);
       // alert in width
     }
-    if ( size * height + 10 > divH ) {
-      size = ((divH - 11) / height) | 0;
+    if ( (size + 1) * height + 1 > divH ) {
+      size = (((divH - 1) / height) | 0) - 1;
       $(sender).val(size);
       // alert in height
     }
     $('tr').css('height', size + 1); // one more for border
     $('td').css('width', size);
+
   // if imput width event
   } else if ( $(sender).attr('id') == 'input_width' ) {
     if ( width < 1 || width > 999 || isNaN(width) ) {
@@ -147,14 +155,55 @@ const validateSize = (sender) => {
       $(sender).val(width);
       // alert in width
     }
-    if ( size * width + 10 > divW ) {
-      width = ((divH - 11) / size) | 0;
-      $(sender).val(width);
-
+    if ( (size + 1) * width + 1 > divW ) {
+      // try reduce size cells if not hold
+      if (! $('#input_hold').is(':checked')){
+        size = (((divW - 1) / width) | 0) - 1;
+        if ( size < 3 ) {
+          size = 3;
+          width = ((divW - 1) / (size  + 1)) | 0;
+          $(sender).val(width);
+        }
+        $('#input_size').val(size);
+        $('tr').css('height', size + 1);
+        $('td').css('width', size);
+        //alert for size
+      } else {
+        width = ((divW - 1) / (size  + 1)) | 0;
+        $(sender).val(width);
+        //console.log("s="+size+"  w="+width+"  sum="+((size+1)*width+1));
+      }
       // alert for width
     }
 
+  // if imput height event
   } else if ( $(sender).attr('id') == 'input_height' ) {
+    if ( height < 1 || height > 999 || isNaN(height) ) {
+      if ( height < 1 ) { height = 1; }
+      else if ( height > 999 ) { height = 999; }
+      else { height = getH($('td:last')) + 1; } // previous value
+      $(sender).val(height);
+      // alert in height
+    }
+    if ( (size + 1) * height + 1 > divH ) {
+      // try reduce size cells if not hold
+      if (! $('#input_hold').is(':checked')){
+        size = (((divH - 1) / height) | 0) - 1;
+        if ( size < 3 ) {
+          size = 3;
+          height = ((divH - 1) / (size  + 1)) | 0;
+          $(sender).val(height);
+        }
+        $('#input_size').val(size);
+        $('tr').css('height', size + 1);
+        $('td').css('width', size);
+        //alert for size
+      } else {
+        height = ((divH - 1) / (size  + 1)) | 0;
+        $(sender).val(height);
+      }
+      // alert for height
+    }
 
   }
   // console.log(divW + '  ' + divH + '  ' + size);
