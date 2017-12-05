@@ -48,6 +48,7 @@ tr {
 td {
     width: 20px;
     padding: 0;
+    background-color: white;
 }
 
 input[type=number] {

@@ -1,11 +1,11 @@
 // Global variable
-let selectColor;
+//let selectColor;
 //let widthGrid = 0, heightGrid = 0;
 
 // TODO: run once until DOM is ready
 $( function () {
   // inicialization variable
-  selectColor = $('#colorPicker').val();
+  //selectColor = $('#colorPicker').val();
 
 /* no more form and submit
   // TODO: bind submit event to form and cancel submit action
@@ -16,15 +16,16 @@ $( function () {
 */
 
   // TODO: adding event delegation to table on all cell
-  $('#pixel_canvas').on('click', 'td', function () {
-    //console.log( $(this).attr('id') );
-    $(this).css('background-color', selectColor);
+  $('#pixel_canvas').on('click mouseenter mouseleave mousedown mouseup', 'td', function (event) {
+    event.preventDefault(); // protection against draggable
+    drawPixels(this, event);
   });
 
-  // TODO: event for change color
+  // no more this variable
+/*  // TODO: event for change color
   $('#colorPicker').change( function () {
     selectColor = $(this).val();
-  });
+  });*/
 
   // TODO: validation size of Grid
   $('input[type="number"]').change( function () {
@@ -204,18 +205,46 @@ const validateSize = (sender) => {
       }
       // alert for height
     }
-
   }
   // console.log(divW + '  ' + divH + '  ' + size);
   makeGrid();
 };
 
-// TODO:
+// TODO: get index horizontal of cell from itself id
 const getW = (cell) => {
   return parseInt( $(cell)[0].id.substr(5, 3) );
 };
 
-// TODO:
+// TODO: get index vertical of cell from itself id
 const getH = (cell) => {
   return parseInt( $(cell)[0].id.substr(1, 3) );
+};
+
+// TODO: main draw function
+const drawPixels = (cell, e) => {
+  const type = e.type;
+  const btn = e.which;
+  //console.log( $(cell).attr('id') );
+  //console.log(getColorPixel(cell));
+  // if (type == 'mousedown' || type == 'mouseup' ) {
+  //   console.log(type + '  button=' + e.which );
+  // }
+  if ((type == 'mousedown' || type == 'mouseenter') && btn == 1 ) {
+    setColorPixel(cell);
+  }
+  // if (type == 'mouseenter') {
+  //   console.log(type + '  button=' + e.which );
+  // }
+}
+
+// TODO:
+const getColorPixel = (cell) => {
+  return $(cell).css('background-color');
+};
+
+// TODO:
+const setColorPixel = (cell) => {
+  let colorP = $(cell).css('background-color');
+  $(cell).css('background-color', $('#colorPicker').val());
+  return colorP;
 };
