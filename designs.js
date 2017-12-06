@@ -210,16 +210,6 @@ const validateSize = (sender) => {
   makeGrid();
 };
 
-// TODO: get index horizontal of cell from itself id
-const getW = (cell) => {
-  return parseInt( $(cell)[0].id.substr(5, 3) );
-};
-
-// TODO: get index vertical of cell from itself id
-const getH = (cell) => {
-  return parseInt( $(cell)[0].id.substr(1, 3) );
-};
-
 // TODO: main draw function
 const drawPixels = (cell, e) => {
   const type = e.type;
@@ -236,15 +226,3 @@ const drawPixels = (cell, e) => {
   //   console.log(type + '  button=' + e.which );
   // }
 }
-
-// TODO:
-const getColorPixel = (cell) => {
-  return $(cell).css('background-color');
-};
-
-// TODO:
-const setColorPixel = (cell) => {
-  let colorP = $(cell).css('background-color');
-  $(cell).css('background-color', $('#colorPicker').val());
-  return colorP;
-};
