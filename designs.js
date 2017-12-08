@@ -1,6 +1,8 @@
 // Global variable
 //let selectColor;
 //let widthGrid = 0, heightGrid = 0;
+let p = new Point();
+let l = new Line();
 
 // TODO: run once until DOM is ready
 $( function () {
@@ -108,12 +110,6 @@ const makeGrid = () => {
   } while ( row < height || nodeRow.length );
 };
 
-// TODO: supporting function for makeGrid
-// adding leading zeros to number to build id rows and cells
-const add0 = (number) => {
-  return ((number < 10 )?'00':(number < 100)?'0' : '') + number.toString();
-};
-
 // TODO: validation of table dimensions
 const validateSize = (sender) => {
   // constans variable for calculation
@@ -214,13 +210,28 @@ const validateSize = (sender) => {
 const drawPixels = (cell, e) => {
   const type = e.type;
   const btn = e.which;
-  //console.log( $(cell).attr('id') );
   //console.log(getColorPixel(cell));
   // if (type == 'mousedown' || type == 'mouseup' ) {
   //   console.log(type + '  button=' + e.which );
   // }
-  if ((type == 'mousedown' || type == 'mouseenter') && btn == 1 ) {
-    setColorPixel(cell);
+  if (type == 'mousedown' && btn == 1) {
+    if (l.set) {
+      l.drawLine(-1,cell);
+    } else {
+      l.drawLine(cell,cell);
+    }
+  }
+  if (type == 'mouseenter' && btn == 1) {
+    l.drawLine(-1, cell);
+  }
+  if (type == 'mouseup' && btn == 1) {
+    //console.log(l.start.x + "   " + l.stop.x );
+    l.set = false;
+  }
+  if ((type == 'mousedown' || type == 'mouseenter') && btn == 1) {
+    //setColorPixel(cell);
+    //console.log( $(cell).attr('id') );
+    //console.log( p.getX() + '  ' + p.getY() );
   }
   // if (type == 'mouseenter') {
   //   console.log(type + '  button=' + e.which );
