@@ -14,6 +14,7 @@ const getW = (cell) => {
 
 // TODO: get index vertical of cell from itself id
 const getH = (cell) => {
+  //console.log(cell + '  ' +  cell.id );
   return parseInt( $(cell)[0].id.substr(1, 3) );
 };
 
@@ -36,7 +37,7 @@ const getSetColorPixel = (cell) => {
 }
 
 
-// TODO: point(x,y)
+// TODO: point(x,y) or point(cell)
 const Point = function () {
   this.x = 0;
   this.y = 0;
@@ -58,57 +59,99 @@ Point.prototype.set = function(cell) {
   this.y = getH(cell);
 };
 Point.prototype.get = function() {
-  console.log(add0(this.y));
   return $('#r' + add0(this.y) + 'c' + add0(this.x));
-}
+};
 Point.prototype.getSetColor = function(color) {
   let cell = this.get();
   let back = $(cell).css('background-color');
   $(cell).css('background-color', color);
   return back;
-}
+};
+Point.prototype.toString = function() {
+  return 'Point={ cell.id="' + $(this.get())[0].id + '"  x=' + this.x + '  y=' + this.y + '} ';
+};
 
-// TODO: two Point and array colors before
+// TODO: two Points and array to remember colors before
+// set - boolean - drawn and remembered colors before
 const Line = function () {
   this.start = new Point();
   this.stop = new Point();
   this.colors = [];
   this.set = false;
 };
-
-// TODO:
+Line.prototype.toString = function() {
+  return 'Line={\n\t' + this.start.toString() + '\n\t' + this.stop.toString() + '\n\tBoolean set=' +
+          this.set + '  Array colors length=' + this.colors.length + '\n}';
+};
+// TODO: draws lines in two stages, erase if she was already
+// and paints until the new end
 Line.prototype.drawLine = function(startCell, stopCell) {
+  //console.log('przed mazaniem  ' + startCell + '  ' + stopCell);
   if (this.set) {
     this.eraseDraw();
   }
+  this.set = false;
+  //console.log('po mazaniu  ' + startCell + '  ' + stopCell);
   if (startCell != -1) {
     this.start.x = getW(startCell);
     this.start.y = getH(startCell);
   }
+  //console.log('pomiedzy  ' + startCell + '  ' + stopCell);
   if (stopCell != -1) {
     this.stop.x = getW(stopCell);
-    this.stop.y = getH(startCell);
+    this.stop.y = getH(stopCell);
   }
-  console.log('tutaj');
+  //console.log('przed rysowaniem  ' + startCell + '  ' + stopCell);
   this.eraseDraw();
+  //console.log('po rusowaniu  ' + startCell + '  ' + stopCell);
   this.set = true;
 };
-// TODO:
+// TODO: decoding next points and drawing or smearing
 Line.prototype.eraseDraw = function() {
   //console.log( this.set );
 
 
   if (this.set) {
-    // mazanie
-
+    // console.log('mazanie');
+    // console.log('start = ' + this.start.toString());
+    // console.log('stop = ' + this.stop.toString());
   } else {
-    // rysowanie
+    // console.log('rysowanie');
+    // console.log('start = ' + this.start.toString());
+    // console.log('stop = ' + this.stop.toString());
   }
+  // only one point
   if (this.start.x == this.stop.x && this.start.y == this.stop.y ) {
-    let c = (this.set) ? this.color[0] : $('#colorPicker').val();
-    this.colors[0] = this.start.getSetColor(c);
+    const color = (this.set) ? this.colors[0] : $('#colorPicker').val();
+    this.colors[0] = this.start.getSetColor(color);
+    //console.log('po jednym punkcie');
+  } else {
+  // two points or more
+    //console.log('wiecej punktow');
+    const x1 = this.start.x;
+    const x2 = this.stop.x;
+    const y1 = this.start.y;
+    const y2 = this.stop.y;
+    const dysX = (x1 > x2) ? x1 - x2 : x2 - x1;
+    const dysY = (y1 > y2) ? y1 - y2 : y2 - y1;
+    let color;
+    //console.log(this.start.toString());
+    if (dysX < 2 && dysY < 2){
+    // only start and stop
+      color = (this.set) ? this.colors[0] : $('#colorPicker').val();
+      this.colors[0] = this.start.getSetColor(color);
+      color = (this.set) ? this.colors[1] : $('#colorPicker').val();
+      this.colors[1] = this.stop.getSetColor(color);
+    } else {
+    // line
+      //console.log('linia');
+      const reflaction = dysX < dysY;
+      const negation = ((x2 - x1) * (y2 - y1)) < 0;
+      const maxX = (reflaction) ? dysY : dysX;
+      for ( let x = 0; x < maxX / 2; x++){
+        
+      }
+
+    }
   }
-
-
-
 };
