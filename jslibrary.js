@@ -54,6 +54,10 @@ Point.prototype.setX = function(x) {
 Point.prototype.setY = function(x) {
   this.y = y;
 };
+Point.prototype.setXY = function(x, y) {
+  this.x = x;
+  this.y = y;
+};
 Point.prototype.set = function(cell) {
   this.x = getW(cell);
   this.y = getH(cell);
@@ -128,12 +132,12 @@ Line.prototype.eraseDraw = function() {
   } else {
   // two points or more
     //console.log('wiecej punktow');
-    const x1 = this.start.x;
-    const x2 = this.stop.x;
-    const y1 = this.start.y;
-    const y2 = this.stop.y;
-    const dysX = (x1 > x2) ? x1 - x2 : x2 - x1;
-    const dysY = (y1 > y2) ? y1 - y2 : y2 - y1;
+    const x1 = (this.start.x < this.stop.x) ? this.start.x : this.stop.x;
+    const x2 = (this.start.x < this.stop.x) ? this.stop.x : this.start.x;
+    const y1 = (this.start.y < this.stop.y) ? this.start.y : this.stop.y;
+    const y2 = (this.start.y < this.stop.y) ? this.stop.y : this.start.y;
+    const dysX = x2 - x1;
+    const dysY = y2 - y1;
     let color;
     //console.log(this.start.toString());
     if (dysX < 2 && dysY < 2){
@@ -144,12 +148,37 @@ Line.prototype.eraseDraw = function() {
       this.colors[1] = this.stop.getSetColor(color);
     } else {
     // line
+      let point = new Point();
+      let x, y;
+      if (dysX == 0 || dysY == 0) {
+      // vertical or horizontal
+        const vert = (dysX == 0);
+        for (let i = 0; i <= ((vert) ? dysY : dysX); i++) {
+          x = x1 + ((vert) ? 0 : i);
+          y = y1 + ((vert) ? i : 0);
+          point.setXY(x, y);
+          //console.log(point.toString() + '  ' + x + '  ' + y + '  ' + i);
+          color = (this.set) ? this.colors[i] : $('#colorPicker').val();
+          this.colors[i] = point.getSetColor(color);
+        }
+      } else {
+      // free lines
+        const flat = (dysY < dysX);
+        for (let i = 0; i <= ((flat) ? dysX : dysY); i++) {
+          x = x1 + ((flat) ? i : ((i * dysX) / dysY));
+          y = y1 + ((flat) ? ((i * dysY) / dysX) : i);
+          point.setXY(x, y);
+          //console.log(point.toString() + '  ' + x + '  ' + y + '  ' + i);
+          color = (this.set) ? this.colors[i] : $('#colorPicker').val();
+          this.colors[i] = point.getSetColor(color);
+        }
+      }
       //console.log('linia');
       const reflaction = dysX < dysY;
       const negation = ((x2 - x1) * (y2 - y1)) < 0;
       const maxX = (reflaction) ? dysY : dysX;
       for ( let x = 0; x < maxX / 2; x++){
-        
+
       }
 
     }
