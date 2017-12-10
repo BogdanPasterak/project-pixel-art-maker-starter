@@ -164,13 +164,23 @@ Line.prototype.eraseDraw = function() {
       } else {
       // free lines
         const flat = (dysY < dysX);
+        let g = (flat) ? dysY + 1 : dysX + 1;
+        let d = (flat) ? dysX + 1 : dysY + 1;
+        let gl = 0;
+        let dl = 0;
+        console.log('start loop');
         for (let i = 0; i <= ((flat) ? dysX : dysY); i++) {
-          x = x1 + ((flat) ? i : ((i * dysX) / dysY));
-          y = y1 + ((flat) ? ((i * dysY) / dysX) : i);
+          if (gl >= d) {
+            gl -= d;
+            dl++;
+          }
+          x = x1 + ((flat) ? i : ((i * dysX) / dysY) | 0);
+          y = y1 + ((flat) ? ((i * dysY) / dysX) | 0 : i);
           point.setXY(x, y);
-          //console.log(point.toString() + '  ' + x + '  ' + y + '  ' + i);
+          console.log(x + '  ' + y + '  ' + i + '   inc=' + dl);
           color = (this.set) ? this.colors[i] : $('#colorPicker').val();
           this.colors[i] = point.getSetColor(color);
+          gl += g;
         }
       }
       //console.log('linia');
