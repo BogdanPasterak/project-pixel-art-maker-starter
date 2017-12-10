@@ -132,12 +132,40 @@ Line.prototype.eraseDraw = function() {
   } else {
   // two points or more
     //console.log('wiecej punktow');
-    const x1 = (this.start.x < this.stop.x) ? this.start.x : this.stop.x;
-    const x2 = (this.start.x < this.stop.x) ? this.stop.x : this.start.x;
-    const y1 = (this.start.y < this.stop.y) ? this.start.y : this.stop.y;
-    const y2 = (this.start.y < this.stop.y) ? this.stop.y : this.start.y;
-    const dysX = x2 - x1;
-    const dysY = y2 - y1;
+    const dysX = (this.stop.x - this.start.x > 0) ? this.stop.x - this.start.x : this.start.x - this.stop.x;
+    const dysY = (this.stop.y - this.start.y > 0) ? this.stop.y - this.start.y : this.start.y - this.stop.y;
+    const moreX = dysX >= dysY;
+    let x1, x2, y1, y2, plus;
+    if (moreX) {
+      if (this.start.x < this.stop.x) {
+        x1 = this.start.x;
+        x2 = this.stop.x;
+        y1 = this.start.y;
+        y2 = this.stop.y;
+        plus = y2 > y1;
+      } else {
+        x1 = this.stop.x;
+        x2 = this.start.x;
+        y1 = this.stop.y;
+        y2 = this.start.y;
+        plus = y2 > y1;
+      }
+    } else {
+      if (this.start.y < this.stop.y) {
+        y1 = this.start.y;
+        y2 = this.stop.y;
+        x1 = this.start.x;
+        x2 = this.stop.x;
+        plus = x2 > x1;
+      } else {
+        y1 = this.stop.y;
+        y2 = this.start.y;
+        x1 = this.stop.x;
+        x2 = this.start.x;
+        plus = x2 > x1;
+      }
+    }
+    //console.log(x1 + ' ' + x2 + ' ' + y1+' ' + y2);
     let color;
     //console.log(this.start.toString());
     if (dysX < 2 && dysY < 2){
@@ -161,27 +189,40 @@ Line.prototype.eraseDraw = function() {
           color = (this.set) ? this.colors[i] : $('#colorPicker').val();
           this.colors[i] = point.getSetColor(color);
         }
+      } else if (dysX == dysY) {
+      // aslant
+        for ( let i = 0; i <= dysX; i++) {
+          x = x1 + i;
+          y = y1 + ((plus) ? i : -i);
+          point.setXY(x, y);
+          //console.log(x + '  ' + y + '  ' + i + '   gl=' + gl + '   dl=' + dl);
+          color = (this.set) ? this.colors[i] : $('#colorPicker').val();
+          this.colors[i] = point.getSetColor(color);
+        }
       } else {
       // free lines
-        const flat = (dysY < dysX);
-        let g = (flat) ? dysY + 1 : dysX + 1;
-        let d = (flat) ? dysX + 1 : dysY + 1;
+        // dodac symetrie , polowa lini
+        //const flat = (dysY < dysX);
+        let g = (moreX) ? dysY : dysX;
+        let d = (moreX) ? dysX : dysY;
         let gl = 0;
         let dl = 0;
-        console.log('start loop');
-        for (let i = 0; i <= ((flat) ? dysX : dysY); i++) {
+        //console.log('start loop' + ' g=' + g + ' d=' + d);
+        for (let i = 0; i <= ((moreX) ? dysX : dysY); i++) {
+          gl += g;
           if (gl >= d) {
             gl -= d;
             dl++;
           }
-          x = x1 + ((flat) ? i : ((i * dysX) / dysY) | 0);
-          y = y1 + ((flat) ? ((i * dysY) / dysX) | 0 : i);
+          x = x1 + ((moreX) ? i : ((plus) ? dl: -dl));
+          y = y1 + ((moreX) ? ((plus) ? dl: -dl) : i);
           point.setXY(x, y);
-          console.log(x + '  ' + y + '  ' + i + '   inc=' + dl);
+          //console.log(x + '  ' + y + '  ' + i + '   gl=' + gl + '   dl=' + dl);
           color = (this.set) ? this.colors[i] : $('#colorPicker').val();
           this.colors[i] = point.getSetColor(color);
-          gl += g;
         }
+        /*
+        */
       }
       //console.log('linia');
       const reflaction = dysX < dysY;
