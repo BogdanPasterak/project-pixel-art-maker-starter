@@ -207,9 +207,13 @@ Line.prototype.eraseDraw = function() {
         let d = (moreX) ? dysX : dysY;
         let gl = 0;
         let dl = 0;
+        let j = 0;
+        const max = ((moreX) ? dysX : dysY) >> 1; // division by 2 without rest
+        const middle = (max << 1 == ((moreX) ? dysX : dysY));
         //console.log('start loop' + ' g=' + g + ' d=' + d);
-        for (let i = 0; i <= ((moreX) ? dysX : dysY); i++) {
+        for (let i = 0; i <= max; i++) {
           gl += g;
+          //j = i << 1;
           if (gl >= d) {
             gl -= d;
             dl++;
@@ -218,8 +222,19 @@ Line.prototype.eraseDraw = function() {
           y = y1 + ((moreX) ? ((plus) ? dl: -dl) : i);
           point.setXY(x, y);
           //console.log(x + '  ' + y + '  ' + i + '   gl=' + gl + '   dl=' + dl);
-          color = (this.set) ? this.colors[i] : $('#colorPicker').val();
-          this.colors[i] = point.getSetColor(color);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          // symmetrical half
+          j++;
+          if (i != max || ! middle) {
+            x = x2 - ((moreX) ? i : ((plus) ? dl: -dl));
+            y = y2 - ((moreX) ? ((plus) ? dl: -dl) : i);
+            point.setXY(x, y);
+            //console.log(x + '  ' + y + '  ' + i + '   gl=' + gl + '   dl=' + dl);
+            color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+            this.colors[j] = point.getSetColor(color);
+          }
+          j++;
         }
         /*
         */
