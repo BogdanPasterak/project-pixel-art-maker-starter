@@ -3,6 +3,7 @@
 //let widthGrid = 0, heightGrid = 0;
 let p = new Point();
 let l = new Line();
+let mode = 'draw';
 
 // TODO: run once until DOM is ready
 $( function () {
@@ -43,6 +44,11 @@ $( function () {
       $('#input_size').attr('readonly', false);
       $('#input_size').removeAttr('style');
     }
+  });
+
+  // TODO:
+  $("input[type='radio'][name='mode']").change( function () {
+    mode = $(this).val();
   });
 
   // initial drawing grid

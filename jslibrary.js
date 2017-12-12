@@ -203,7 +203,7 @@ Line.prototype.eraseDraw = function() {
       // free lines
         // dodac symetrie , polowa lini
         //const flat = (dysY < dysX);
-        let g = (moreX) ? dysY : dysX;
+        let g = (moreX) ? dysY + 1: dysX + 1;
         let d = (moreX) ? dysX : dysY;
         let gl = 0;
         let dl = 0;
@@ -212,12 +212,12 @@ Line.prototype.eraseDraw = function() {
         const middle = (max << 1 == ((moreX) ? dysX : dysY));
         //console.log('start loop' + ' g=' + g + ' d=' + d);
         for (let i = 0; i <= max; i++) {
-          gl += g;
           //j = i << 1;
           if (gl >= d) {
             gl -= d;
             dl++;
           }
+          gl += g;
           x = x1 + ((moreX) ? i : ((plus) ? dl: -dl));
           y = y1 + ((moreX) ? ((plus) ? dl: -dl) : i);
           point.setXY(x, y);
