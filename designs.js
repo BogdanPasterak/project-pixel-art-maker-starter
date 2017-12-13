@@ -221,18 +221,28 @@ const drawPixels = (cell, e) => {
   //   console.log(type + '  button=' + e.which );
   // }
   if (type == 'mousedown' && btn == 1) {
-    if (l.set) {
-      l.drawLine(-1,cell);
-    } else {
-      l.drawLine(cell,cell);
+    if (mode === 'draw' || mode === 'line') {
+      if (l.set) {
+        l.drawLine(-1, cell);
+      } else {
+        l.drawLine(cell, cell);
+      }
     }
   }
   if (type == 'mouseenter' && btn == 1) {
-    l.drawLine(-1, cell);
+    if (mode === 'draw') {
+      l.drawLine(-1, cell);
+      l.set = false;
+      l.drawLine(cell, cell);
+    } else if (mode === 'line') {
+      l.drawLine(-1, cell);
+    }
   }
   if (type == 'mouseup' && btn == 1) {
     //console.log(l.start.x + "   " + l.stop.x );
-    l.set = false;
+    if (mode === 'draw' || mode === 'line') {
+      l.set = false;
+    }
   }
   if ((type == 'mousedown' || type == 'mouseenter') && btn == 1) {
     //setColorPixel(cell);
