@@ -113,17 +113,6 @@ Line.prototype.drawLine = function(startCell, stopCell) {
 // TODO: decoding next points and drawing or smearing
 Line.prototype.eraseDraw = function() {
   //console.log( this.set );
-
-
-  if (this.set) {
-    // console.log('mazanie');
-    // console.log('start = ' + this.start.toString());
-    // console.log('stop = ' + this.stop.toString());
-  } else {
-    // console.log('rysowanie');
-    // console.log('start = ' + this.start.toString());
-    // console.log('stop = ' + this.stop.toString());
-  }
   // only one point
   if (this.start.x == this.stop.x && this.start.y == this.stop.y ) {
     const color = (this.set) ? this.colors[0] : $('#colorPicker').val();
@@ -135,37 +124,13 @@ Line.prototype.eraseDraw = function() {
     const dysX = (this.stop.x - this.start.x > 0) ? this.stop.x - this.start.x : this.start.x - this.stop.x;
     const dysY = (this.stop.y - this.start.y > 0) ? this.stop.y - this.start.y : this.start.y - this.stop.y;
     const moreX = dysX >= dysY;
-    let x1, x2, y1, y2, plus;
-    if (moreX) {
-      if (this.start.x < this.stop.x) {
-        x1 = this.start.x;
-        x2 = this.stop.x;
-        y1 = this.start.y;
-        y2 = this.stop.y;
-        plus = y2 > y1;
-      } else {
-        x1 = this.stop.x;
-        x2 = this.start.x;
-        y1 = this.stop.y;
-        y2 = this.start.y;
-        plus = y2 > y1;
-      }
-    } else {
-      if (this.start.y < this.stop.y) {
-        y1 = this.start.y;
-        y2 = this.stop.y;
-        x1 = this.start.x;
-        x2 = this.stop.x;
-        plus = x2 > x1;
-      } else {
-        y1 = this.stop.y;
-        y2 = this.start.y;
-        x1 = this.stop.x;
-        x2 = this.start.x;
-        plus = x2 > x1;
-      }
-    }
-    //console.log(x1 + ' ' + x2 + ' ' + y1+' ' + y2);
+    const startLess = (moreX) ? (this.start.x < this.stop.x) : (this.start.y < this.stop.y);
+    const x1 = (startLess) ? this.start.x : this.stop.x;
+    const x2 = (startLess) ? this.stop.x : this.start.x;
+    const y1 = (startLess) ? this.start.y : this.stop.y;
+    const y2 = (startLess) ? this.stop.y : this.start.y;
+    const plus = (moreX) ? (y2 > y1) : (x2 > x1);
+    //console.log(startLess + '   ' + plus);
     let color;
     //console.log(this.start.toString());
     if (dysX < 2 && dysY < 2){
@@ -201,7 +166,6 @@ Line.prototype.eraseDraw = function() {
         }
       } else {
       // free lines
-        // dodac symetrie , polowa lini
         //const flat = (dysY < dysX);
         let g = (moreX) ? dysY + 1: dysX + 1;
         let d = (moreX) ? dysX : dysY;
@@ -236,17 +200,7 @@ Line.prototype.eraseDraw = function() {
           }
           j++;
         }
-        /*
-        */
       }
-      //console.log('linia');
-      const reflaction = dysX < dysY;
-      const negation = ((x2 - x1) * (y2 - y1)) < 0;
-      const maxX = (reflaction) ? dysY : dysX;
-      for ( let x = 0; x < maxX / 2; x++){
-
-      }
-
     }
   }
 };
