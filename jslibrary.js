@@ -51,7 +51,7 @@ Point.prototype.getY = function() {
 Point.prototype.setX = function(x) {
   this.x = x;
 };
-Point.prototype.setY = function(x) {
+Point.prototype.setY = function(y) {
   this.y = y;
 };
 Point.prototype.setXY = function(x, y) {
@@ -74,6 +74,9 @@ Point.prototype.getSetColor = function(color) {
 Point.prototype.toString = function() {
   return 'Point={ cell.id="' + $(this.get())[0].id + '"  x=' + this.x + '  y=' + this.y + '} ';
 };
+Point.prototype.equals = function(p2) {
+  return (p2 instanceof Point && this.x === p2.x && this.y === p2.y);
+};
 
 // TODO: two Points and array to remember colors before
 // set - boolean - drawn and remembered colors before
@@ -90,61 +93,67 @@ Line.prototype.toString = function() {
 // TODO: draws lines in two stages, erase if she was already
 // and paints until the new end
 Line.prototype.drawLine = function(startCell, stopCell) {
-  //console.log('przed mazaniem  ' + startCell + '  ' + stopCell);
   if (this.set) {
     this.eraseDraw();
   }
   this.set = false;
-  //console.log('po mazaniu  ' + startCell + '  ' + stopCell);
   if (startCell != -1) {
     this.start.x = getW(startCell);
     this.start.y = getH(startCell);
   }
-  //console.log('pomiedzy  ' + startCell + '  ' + stopCell);
   if (stopCell != -1) {
     this.stop.x = getW(stopCell);
     this.stop.y = getH(stopCell);
   }
-  //console.log('przed rysowaniem  ' + startCell + '  ' + stopCell);
   this.eraseDraw();
-  //console.log('po rusowaniu  ' + startCell + '  ' + stopCell);
   this.set = true;
 };
+
 // TODO: decoding next points and drawing or smearing
 Line.prototype.eraseDraw = function() {
   //console.log( this.set );
-  // only one point
-  if (this.start.x == this.stop.x && this.start.y == this.stop.y ) {
+  // only one point all mode
+  if (this.start.equals(this.stop)) {
     const color = (this.set) ? this.colors[0] : $('#colorPicker').val();
     this.colors[0] = this.start.getSetColor(color);
     //console.log('po jednym punkcie');
   } else {
   // two points or more
-    //console.log('wiecej punktow');
+    let point = new Point();
     const dysX = (this.stop.x - this.start.x > 0) ? this.stop.x - this.start.x : this.start.x - this.stop.x;
     const dysY = (this.stop.y - this.start.y > 0) ? this.stop.y - this.start.y : this.start.y - this.stop.y;
-    const moreX = dysX >= dysY;
-    const startLess = (moreX) ? (this.start.x < this.stop.x) : (this.start.y < this.stop.y);
-    const x1 = (startLess) ? this.start.x : this.stop.x;
-    const x2 = (startLess) ? this.stop.x : this.start.x;
-    const y1 = (startLess) ? this.start.y : this.stop.y;
-    const y2 = (startLess) ? this.stop.y : this.start.y;
-    const plus = (moreX) ? (y2 > y1) : (x2 > x1);
-    //console.log(startLess + '   ' + plus);
     let color;
-    //console.log(this.start.toString());
     if (dysX < 2 && dysY < 2){
-    // only start and stop
+    // only start and stop , all mode
       color = (this.set) ? this.colors[0] : $('#colorPicker').val();
       this.colors[0] = this.start.getSetColor(color);
       color = (this.set) ? this.colors[1] : $('#colorPicker').val();
       this.colors[1] = this.stop.getSetColor(color);
+      if ((mode === 'rect' || mode ==='circle') && dysX === dysY ) {  //dysX == dysY == 1
+      // if rect or circle and cross -> two more points
+        point.setXY(this.start.x, this.stop.y);
+        color = (this.set) ? this.colors[2] : $('#colorPicker').val();
+        this.colors[2] = point.getSetColor(color);
+        point.setXY(this.stop.x, this.start.y);
+        color = (this.set) ? this.colors[3] : $('#colorPicker').val();
+        this.colors[3] = point.getSetColor(color);
+      }
     } else {
     // line
-      let point = new Point();
+      const moreX = dysX >= dysY;
+      const startLess = (moreX) ? (this.start.x < this.stop.x) : (this.start.y < this.stop.y);
+      const x1 = (startLess) ? this.start.x : this.stop.x;
+      const x2 = (startLess) ? this.stop.x : this.start.x;
+      const y1 = (startLess) ? this.start.y : this.stop.y;
+      const y2 = (startLess) ? this.stop.y : this.start.y;
+      const plus = (moreX) ? (y2 > y1) : (x2 > x1);
       let x, y;
-      if (dysX == 0 || dysY == 0) {
-      // vertical or horizontal
+      if (mode === 'circle') {
+        ;
+
+
+      } else if (dysX == 0 || dysY == 0) {
+      // vertical or horizontal line and rect
         const vert = (dysX == 0);
         for (let i = 0; i <= ((vert) ? dysY : dysX); i++) {
           x = x1 + ((vert) ? 0 : i);
@@ -154,8 +163,37 @@ Line.prototype.eraseDraw = function() {
           color = (this.set) ? this.colors[i] : $('#colorPicker').val();
           this.colors[i] = point.getSetColor(color);
         }
+      } else if (mode === 'rect') {
+        //console.log('rect');
+        const xl = (this.start.x < this.stop.x) ? this.start.x: this.stop.x;
+        const xm = (this.start.x < this.stop.x) ? this.stop.x: this.start.x;
+        const yl = (this.start.y < this.stop.y) ? this.start.y: this.stop.y;
+        const ym = (this.start.y < this.stop.y) ? this.stop.y: this.start.y;
+        let j = 0;
+        for (let i = 0; i <= dysX; i++) {
+          point.setXY(xl + i, yl);
+          //console.log(point.toString() + '  i=' + i);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+          point.setY(ym);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+        }
+        for (let i = 1; i < dysY; i++) {
+          point.setXY(xl, yl + i);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+          point.setX(xm);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+        }
+
       } else if (dysX == dysY) {
-      // aslant
+      // 45 degrees line
         for ( let i = 0; i <= dysX; i++) {
           x = x1 + i;
           y = y1 + ((plus) ? i : -i);
@@ -165,8 +203,7 @@ Line.prototype.eraseDraw = function() {
           this.colors[i] = point.getSetColor(color);
         }
       } else {
-      // free lines
-        //const flat = (dysY < dysX);
+      // diagonal lines
         let g = (moreX) ? dysY + 1: dysX + 1;
         let d = (moreX) ? dysX : dysY;
         let gl = 0;
