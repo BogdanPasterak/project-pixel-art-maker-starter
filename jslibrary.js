@@ -149,7 +149,72 @@ Line.prototype.eraseDraw = function() {
       const plus = (moreX) ? (y2 > y1) : (x2 > x1);
       let x, y;
       if (mode === 'circle') {
-        ;
+        const r2 = dysX * dysX + dysY * dysY;
+        //console.log(r2);
+        let j = 0;
+        x = Math.round(Math.sqrt(r2));
+        point.setXY(this.start.x + x, this.start.y);
+        color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+        this.colors[j] = point.getSetColor(color);
+        j++;
+        point.setXY(this.start.x - x, this.start.y);
+        color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+        this.colors[j] = point.getSetColor(color);
+        j++;
+        point.setXY(this.start.x, this.start.y + x);
+        color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+        this.colors[j] = point.getSetColor(color);
+        j++;
+        point.setXY(this.start.x, this.start.y - x);
+        color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+        this.colors[j] = point.getSetColor(color);
+        j++;
+        x = 1;
+        do {
+          y = Math.round(Math.sqrt(r2 - x * x));
+
+          point.setXY(this.start.x + x, this.start.y + y);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+          if (x !== y) {
+            point.setXY(this.start.x + y, this.start.y + x);
+            color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+            this.colors[j] = point.getSetColor(color);
+            j++;
+          }
+          point.setXY(this.start.x - x, this.start.y - y);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+          if (x !== y && x > 0) {
+            point.setXY(this.start.x - y, this.start.y - x);
+            color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+            this.colors[j] = point.getSetColor(color);
+            j++;
+          }
+          point.setXY(this.start.x - x, this.start.y + y);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+          if (x !== y) {
+            point.setXY(this.start.x - y, this.start.y + x);
+            color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+            this.colors[j] = point.getSetColor(color);
+            j++;
+          }
+          point.setXY(this.start.x + x, this.start.y - y);
+          color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+          this.colors[j] = point.getSetColor(color);
+          j++;
+          if (x !== y && x > 0) {
+            point.setXY(this.start.x + y, this.start.y - x);
+            color = (this.set) ? this.colors[j] : $('#colorPicker').val();
+            this.colors[j] = point.getSetColor(color);
+            j++;
+          }
+          x++;
+        } while (x < y);
 
 
       } else if (dysX == 0 || dysY == 0) {
