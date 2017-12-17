@@ -80,12 +80,8 @@ const makeGrid = () => {
     } else {
       // if the row not exists create and add new node
       if ( ! nodeRow.length ) {
-        nodeRow = $('<tr id=\"' + idRow + '\"></tr>');
-        nodeRow.css('height', parseInt(size) + 1);
+        nodeRow = $('<tr id=\"' + idRow + '\" class=\"row_canvas\"></tr>');
         target.append(nodeRow);
-      // } else if ( nodeRow.css('height') != parseInt(size) + 1) {
-      //   // corect size if need
-      //   nodeRow.css('height', parseInt(size) + 1);
       }
       // loop for cells
       col = 0;
@@ -97,23 +93,23 @@ const makeGrid = () => {
           nodeCell.remove();
         // if the cell not exists create and add new node
         } else if ( ! nodeCell.length ) {
-          nodeCell = $('<td id=\"' + idCell + '\"></td>');
-          nodeCell.css('width', size);
+          nodeCell = $('<td id=\"' + idCell + '\" class=\"cell_canvas\"></td>');
           nodeRow.append(nodeCell);
-        // } else if ( nodeCell.css('width') != size ) {
-        //   // corect size
-        //   nodeCell.css('width', size);
         }
+        // sets for next cell
         col += 1;
         idCell = idRow + 'c' + add0(col);
         nodeCell = $('#' + idCell);
       } while ( col < width || nodeCell.length );
     }
-    //console.log(idRow);
+    //sets for next row
     row += 1;
     idRow = 'r' + add0(row);
     nodeRow = $('#' + idRow);
   } while ( row < height || nodeRow.length );
+  // resize all cell
+  $('.row_canvas').css('height', parseInt(size) + 1);
+  $('.cell_canvas').css('width', size);
 };
 
 // TODO: validation of table dimensions
@@ -146,8 +142,6 @@ const validateSize = (sender) => {
       $(sender).val(size);
       // alert in height
     }
-    $('tr').css('height', size + 1); // one more for border
-    $('td').css('width', size);
 
   // if imput width event
   } else if ( $(sender).attr('id') == 'input_width' ) {
@@ -168,8 +162,6 @@ const validateSize = (sender) => {
           $(sender).val(width);
         }
         $('#input_size').val(size);
-        $('tr').css('height', size + 1);
-        $('td').css('width', size);
         //alert for size
       } else {
         width = ((divW - 1) / (size  + 1)) | 0;
@@ -198,8 +190,6 @@ const validateSize = (sender) => {
           $(sender).val(height);
         }
         $('#input_size').val(size);
-        $('tr').css('height', size + 1);
-        $('td').css('width', size);
         //alert for size
       } else {
         height = ((divH - 1) / (size  + 1)) | 0;
