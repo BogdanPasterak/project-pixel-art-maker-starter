@@ -7,13 +7,12 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="jslibrary.js"></script>
+  <script src="demo.js"></script>
   <script src="designs.js"></script>
 </head>
 <body>
-
-  <h1>Lab: Pixel Art Maker</h1>
-
-  <div id="sizePicker">
+  <div class="flex_div" id="title"></div>
+  <div id="sizePicker" class="flex_div">
     <h2>Choose Grid Size</h2>
     Grid Height:
     <input type="number" id="input_height" name="height" min="1" max="999" value="100">
@@ -26,7 +25,7 @@
     <!-- <input type="submit"> -->
   </div>
 
-  <div>
+  <div class="flex_div">
     <h2>Pick A Color</h2>
     <input type="color" id="colorPicker">
     <input type="radio" name="mode" value="draw" checked="checked">drawing
@@ -40,7 +39,7 @@
   <div id="div_canvas">
     <table id="pixel_canvas"></table>
   </div>
-  <div>
+  <div class="flex_div">
     <p>Bogdan Pasterak</p>
   </div>
 </body>

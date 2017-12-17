@@ -5,19 +5,11 @@ html {
 body {
   margin: 0;
   height: 100%;
+  min-width: 300px;
+  min-height: 450px;
   text-align: center;
   display: flex;
   flex-flow: column;
-}
-
-div {
-  flex: 0 1 auto;
-}
-
-h1 {
-    font-family: Monoton;
-    font-size: 70px;
-    margin: 0.2em;
 }
 
 h2 {
@@ -28,25 +20,11 @@ h2:first-of-type {
     margin-top: 0.5em;
 }
 
-table,
-tr,
-td {
-    border: 1px solid lightgray;
-}
-
-table {
+#pixel_canvas,
+.cell_canvas {
     border-collapse: collapse;
+    border: 1px dotted lightgray;
     margin: 0 auto;
-    padding: 0;
-    background-color: white;
-}
-
-tr {
-    height: 21px;
-}
-
-td {
-    width: 20px;
     padding: 0;
     background-color: white;
 }
@@ -61,4 +39,15 @@ input[type=number] {
   margin: 0;
   border: 0;
   padding: 0;
+}
+
+#title {
+  font-family: Monoton;
+  font-size: 70px;
+  margin: 0.1em;
+
+}
+
+.flex_div {
+  flex: 0 1 auto;
 }
