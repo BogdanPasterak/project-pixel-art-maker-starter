@@ -28,7 +28,11 @@ h2:first-of-type {
     padding: 0;
     background-color: white;
 }
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> ac8a876e8e6012bc6d14305f3be55c94f080c08e
 input[type=number] {
     width: 3em;
 }
