@@ -48,6 +48,15 @@ input[type=number] {
 
 }
 
+.char_div {
+  display: inline-block;
+  min-width: 15px;
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+
 .flex_div {
   flex: 0 1 auto;
+  min-height: 100px;
 }
