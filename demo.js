@@ -24,4 +24,16 @@ const startPage = () => {
     sumWidth += ($(this).width() * overlap) | 0;
   });
 
+  $('.char_div').each(function(index, element) {
+    setTimeout( function() {
+      $(element).css('animation-name', 'turn_font');
+    }, ((title.length - index) * 100) );
+    console.log(index);
+  });
+
+  // $('.char_div:nth(0)').delay('slow').css('animation-name', 'turn_font');
+  // console.log("a");
 };
+
+const turnFont = () => {
+}

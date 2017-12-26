@@ -48,6 +48,11 @@ input[type=number] {
 
 }
 
+.flex_div {
+  flex: 0 1 auto;
+  min-height: 100px;
+}
+
 .char_div {
   display: inline-block;
   min-width: 15px;
@@ -56,9 +61,13 @@ input[type=number] {
   left: -200px;
   top: 0;
   background-color: white;
+  transform: rotateY(0deg);
+  transition: transform 3s;
+  transition-timing-function: linear;
+  animation-duration: 3s;
 }
 
-.flex_div {
-  flex: 0 1 auto;
-  min-height: 100px;
+@keyframes turn_font {
+  50%  {transform: rotateY(-180deg);}
+  100% {transform: rotateY(0deg);}
 }
