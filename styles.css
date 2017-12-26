@@ -44,16 +44,18 @@ input[type=number] {
 #title {
   font-family: Monoton;
   font-size: 70px;
-  margin: 0.1em;
+  margin: 0;
 
 }
 
 .char_div {
   display: inline-block;
   min-width: 15px;
+  min-height: 100px;
   position: absolute;
-  left: 10px;
+  left: -200px;
   top: 0;
+  background-color: white;
 }
 
 .flex_div {

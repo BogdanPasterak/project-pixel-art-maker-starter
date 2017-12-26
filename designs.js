@@ -52,10 +52,10 @@ $( function () {
   });
 
   // TODO: Demo start
-  startPage();
+  //startPage();
 
   // initial drawing grid
-  validateSize($('#input_size'));
+  validateSize($('#input_hold'));
 
 })
 
@@ -124,8 +124,52 @@ const validateSize = (sender) => {
   const divW = parseInt($('#div_canvas').css('width'));
   const divH = parseInt($('#div_canvas').css('height'));
 
+  //console.log(sender)
+
+  // start , restart validacion
+  if ( $(sender).attr('id') == 'input_hold' ) {
+
+    if ( (size + 1) * width + 1 > divW ) {
+      // try reduce size cells if not hold
+      if (! $('#input_hold').is(':checked')){
+        size = (((divW - 1) / width) | 0) - 1;
+        if ( size < 3 ) {
+          size = 3;
+          width = ((divW - 1) / (size  + 1)) | 0;
+          $('#input_width').val(width);
+        }
+        $('#input_size').val(size);
+        //alert for size
+      } else {
+        width = ((divW - 1) / (size  + 1)) | 0;
+        $('#input_width').val(width);
+        //console.log("s="+size+"  w="+width+"  sum="+((size+1)*width+1));
+      }
+      // alert for width
+    }
+    if ( (size + 1) * height + 1 > divH ) {
+      // try reduce size cells if not hold
+      if (! $('#input_hold').is(':checked')){
+        size = (((divH - 1) / height) | 0) - 1;
+        if ( size < 3 ) {
+          size = 3;
+          height = ((divH - 1) / (size  + 1)) | 0;
+          $('#input_heiiht').val(height);
+        }
+        $('#input_size').val(size);
+        //alert for size
+      } else {
+        height = ((divH - 1) / (size  + 1)) | 0;
+        $('#input_heiiht').val(height);
+      }
+      // alert for height
+    }
+
+
+
+
   // if imput size event
-  if ( $(sender).attr('id') == 'input_size' ) {
+  } else if ( $(sender).attr('id') == 'input_size' ) {
     // wrong values
     if ( size < 3 || size > 99 || isNaN(size) ) {
       if ( size < 3 ) { size = 3; }

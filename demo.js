@@ -1,28 +1,27 @@
 const startPage = () => {
-  const title = ['L','a','b',':',' ','P','i','x','e','l',' ','A','r','t',' ','M','a','k','e','r'];
   const where = $('#title');
+  const title = (where.width() < 700) ? "Pixel Art".split("") : "Lab: Pixel Art Maker".split("");
   let oneDiv;
+  let sumWidth = 0;
+  let overlap = 1;
 
-
-  title.forEach(function(char, index) {
+  title.forEach(function(char) {
     oneDiv = $('<div class="char_div">' + char + '</div>');
     where.append(oneDiv);
-    // oneDiv.css('left', sumWidth);
-    // console.log(sumWidth + "  " + (oneDiv.width() | 0) + "  " + (oneDiv.width()));
-    // sumWidth += oneDiv.width() | 0;
+    sumWidth += oneDiv.width();
   });
 
-  setTimeout(setDystans,500);
-
-};
-
-const setDystans = () => {
-  let sumWidth = 50;
+  if ( sumWidth < where.width() - 20) {
+    sumWidth = ((where.width() - sumWidth) >> 1) + 7;
+  } else {
+    overlap = $('.char_div').last().width();
+    overlap = (where.width() - 20 - overlap) / (sumWidth - overlap);
+    sumWidth = 10;
+  }
 
   $('.char_div').each(function() {
     $(this).css('left', sumWidth);
-    console.log(sumWidth + "  " + ($(this).width() | 0) + "  " + ($(this).width()));
-    sumWidth += $(this).width() | 0;
+    sumWidth += ($(this).width() * overlap) | 0;
   });
 
 };
