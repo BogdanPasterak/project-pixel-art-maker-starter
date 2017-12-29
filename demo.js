@@ -41,5 +41,11 @@ const startPage = () => {
   // console.log("a");
 };
 
-const turnFont = () => {
+const setColors = () => {
+  const array_colors = ['white', 'gray', 'red', 'fuchsia', 'yellow', 'lime', 'aqua', 'teal',
+                        'silver', 'black', 'maroon', 'purple', 'olive', 'green', 'blue', 'navy'];
+
+  $('#colors td').each(function(index) {
+    $(this).css('background-color', array_colors[index]);
+  });
 }

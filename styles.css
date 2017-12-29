@@ -33,6 +33,25 @@ input[type=number] {
     width: 3em;
 }
 
+#colors {
+  display: inline-block;
+}
+
+#colors,
+#colors tr,
+#colors td {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+#colors tr {
+  height: 10px;
+}
+
+#colors td {
+  width: 25px;
+}
+
 #div_canvas {
   flex: 1 1 auto;
   background-color: white;
@@ -45,7 +64,6 @@ input[type=number] {
   font-family: Monoton;
   font-size: 70px;
   margin: 0;
-
 }
 
 .flex_div {

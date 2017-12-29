@@ -30,6 +30,13 @@ $( function () {
     selectColor = $(this).val();
   });*/
 
+  $('#colors td').click(function() {
+    console.log($(this).css('background-color'));
+    console.log($('#colorPicker').val());
+    // convert rgbToHEX
+    $('#colorPicker').val(rgbToHex($(this).css('background-color').toString()));
+  });
+
   // TODO: validation size of Grid
   $('input[type="number"]').change( function () {
     validateSize(this);
@@ -53,6 +60,8 @@ $( function () {
 
   // TODO: Demo start
   //startPage();
+
+  setColors();
 
   // initial drawing grid
   validateSize($('#input_hold'));
