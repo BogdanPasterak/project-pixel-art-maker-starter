@@ -1,9 +1,10 @@
 // Global variable
 //let selectColor;
 //let widthGrid = 0, heightGrid = 0;
-let p = new Point();
+//let p = new Point();
 let l = new Line();
 let mode = 'draw';
+let myColors = [0, 0, 0, 0, 0, 0, 0, 0];
 
 // TODO: run once until DOM is ready
 $( function () {
@@ -25,16 +26,27 @@ $( function () {
   });
 
   // no more this variable
-/*  // TODO: event for change color
+  // TODO: event for change color
   $('#colorPicker').change( function () {
-    selectColor = $(this).val();
-  });*/
+    //selectColor = $(this).val();
+    let index = 0;
+    let min = myColors[index];
+    myColors.forEach(function(e, i) {
+      if (e < min){
+        min = e;
+        index = i;
+      }
+    });
+    // console.log(index);
+    $('#' + index).css('background-color', $('#colorPicker').val());
+    myColors[index]++;
+  });
 
   $('#colors td').click(function() {
-    console.log($(this).css('background-color'));
-    console.log($('#colorPicker').val());
-    // convert rgbToHEX
-    $('#colorPicker').val(rgbToHex($(this).css('background-color').toString()));
+    $('#colorPicker').val(rgbToHex($(this).css('background-color')));
+    if ($(this).parent().is($('#arrayColors'))) {
+      myColors[$(this).attr('id')]++;
+    }
   });
 
   // TODO: validation size of Grid

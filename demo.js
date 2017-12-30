@@ -43,7 +43,8 @@ const startPage = () => {
 
 const setColors = () => {
   const array_colors = ['white', 'gray', 'red', 'fuchsia', 'yellow', 'lime', 'aqua', 'teal',
-                        'silver', 'black', 'maroon', 'purple', 'olive', 'green', 'blue', 'navy'];
+                        'silver', 'black', 'maroon', 'purple', 'olive', 'green', 'blue', 'navy',
+                        'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white'];
 
   $('#colors td').each(function(index) {
     $(this).css('background-color', array_colors[index]);
