@@ -26,11 +26,15 @@ h2 {
 }
 
 input[type=number] {
-    width: 3em;
+    width: 3.5em;
 }
 
 input {
   vertical-align: middle;
+}
+
+img, embed, object, video {
+  max-width: 100%;
 }
 
 #colors {
@@ -64,13 +68,49 @@ input {
 #title {
   font-family: Monoton;
   font-size: 70px;
-  min-height: 82px;
+  min-height: 85px;
   margin: 0;
 }
 
 .flex_div {
   flex: 0 1 auto;
-  /* min-height: 100px; */
+}
+
+.wrap_div {
+  display: inline-flex;
+  flex-wrap: wrap;
+  border: 1px solid #eee;
+}
+
+.quarter {
+  max-width: 23%;
+}
+
+.half {
+  display: inline-flex;
+  max-width: 49%;
+}
+
+.full {
+  max-width: 99%;
+}
+
+.min_box {
+  border: 1px solid #ccc;
+  margin: 2px;
+  padding: 1px;
+  align-content: center;
+  min-width: 55px;
+  min-height: 15px;
+}
+
+.mode_box {
+  border: 1px solid #caa;
+  margin: 2px;
+  padding: 10px 1px;
+  align-content: center;
+  min-width: 90px;
+  min-height: 15px;
 }
 
 .char_div {
@@ -89,6 +129,14 @@ input {
 
 .left_side {
   transform: rotateY(180deg);
+}
+
+@media screen and (max-width: 550px) {
+  .quarter {  max-width: 65px; }
+}
+
+@media screen and (max-width: 600px) {
+  .full {  max-width: 296px; }
 }
 
 @keyframes turn_font1 {

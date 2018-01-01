@@ -5,13 +5,14 @@
 let l = new Line();
 let mode = 'draw';
 let myColors = [0, 0, 0, 0, 0, 0, 0, 0];
+const isTouch = ('ontouchstart' in window);
 
 // TODO: run once until DOM is ready
 $( function () {
   // inicialization variable
   //selectColor = $('#colorPicker').val();
 
-/* no more form and submit
+/* no more form and submit button
   // TODO: bind submit event to form and cancel submit action
   $('#sizePicker').submit( function (event) {
     makeGrid();

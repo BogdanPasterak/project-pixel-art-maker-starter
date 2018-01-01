@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Pixel Art Maker!</title>
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton"> -->
   <link rel="stylesheet" href="styles.css">
@@ -23,16 +25,40 @@
 </head>
 <body>
   <div class="flex_div" id="title"></div>
-  <div id="sizePicker" class="flex_div">
+  <div class="flex_div">
     <h2>Choose Grid Size</h2>
-    Grid Height:
-    <input type="number" id="input_height" name="height" min="1" max="999" value="100">
-    Grid Width:
-    <input type="number" id="input_width" name="width" min="1" max="999" value="100">
-    Grid Size:
-    <input type="number" id="input_size" name="size" min="3" max="99" value="20">
-    <input type="checkbox" id="input_hold" name="hold">
-    Hold
+    <div class="wrap_div quarter">
+      <div class="min_box">
+        Height:
+      </div>
+      <div class="min_box">
+        <input type="number" id="input_height" name="height" min="1" max="999" value="100">
+      </div>
+    </div>
+    <div class="wrap_div quarter">
+      <div class="min_box">
+        Width:
+      </div>
+      <div class="min_box">
+        <input type="number" id="input_width" name="width" min="1" max="999" value="100">
+      </div>
+    </div>
+    <div class="wrap_div quarter">
+      <div class="min_box">
+        Size:
+      </div>
+      <div class="min_box">
+        <input type="number" id="input_size" name="size" min="3" max="99" value="20">
+      </div>
+    </div>
+    <div class="wrap_div quarter">
+      <div class="min_box">
+        Hold:
+      </div>
+      <div class="min_box">
+        <input type="checkbox" id="input_hold" name="hold">
+      </div>
+    </div>
     <!-- <input type="submit"> -->
   </div>
 
@@ -47,11 +73,36 @@
       </tr>
     </table>
     <input type="color" id="colorPicker">
-    <input type="radio" name="mode" value="draw" checked="checked">drawing
-    <input type="radio" name="mode" value="line">line
-    <input type="radio" name="mode" value="rect">rectangle
-    <input type="radio" name="mode" value="circle">circle
+  </div>
 
+  <div class="flex_div">
+    <h2>Drawing Mode</h2>
+    <div class="wrap_div full">
+      <div class="mode_box">
+        <input type="radio" name="mode" value="draw" id="draw" checked="checked">
+        <label for="draw">Draw</label>
+      </div>
+      <div class="mode_box">
+        <input type="radio" name="mode" value="line" id="line">
+        <label for="line">Line</label>
+      </div>
+      <div class="mode_box">
+        <input type="radio" name="mode" value="rect" id="rect">
+        <label for="rect">Rectangle</label>
+      </div>
+      <div class="mode_box">
+        <input type="radio" name="mode" value="circle" id="circle">
+        <label for="circle">Circle</label>
+      </div>
+      <div class="mode_box">
+        <input type="radio" name="mode" value="fill" id="fill">
+        <label for="fill">Fill</label>
+      </div>
+      <div class="mode_box">
+        <input type="radio" name="mode" value="clear" id="clear">
+        <label for="clear">Clear</label>
+      </div>
+    </div>
   </div>
   <div class="flex_div">
     <h2>Design Canvas</h2>
