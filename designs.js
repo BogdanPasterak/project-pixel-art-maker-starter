@@ -71,13 +71,20 @@ $( function () {
     mode = $(this).val();
   });
 
+  //TODO: after resize
+  $(window).resize(function() {
+    //console.log($(window).width());
+    validateSize('RESIZE');
+    startPage();
+  });
+
   // TODO: Demo start
   //startPage();
 
   setColors();
 
   // initial drawing grid
-  validateSize($('#input_hold'));
+  validateSize('RESIZE');
 
 })
 
@@ -149,7 +156,7 @@ const validateSize = (sender) => {
   //console.log(sender)
 
   // start , restart validacion
-  if ( $(sender).attr('id') == 'input_hold' ) {
+  if ( sender === 'RESIZE' ) {
 
     if ( (size + 1) * width + 1 > divW ) {
       // try reduce size cells if not hold

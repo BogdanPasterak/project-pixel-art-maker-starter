@@ -86,11 +86,6 @@ img, embed, object, video {
   max-width: 23%;
 }
 
-.half {
-  display: inline-flex;
-  max-width: 49%;
-}
-
 .full {
   max-width: 99%;
 }

@@ -5,6 +5,7 @@ const startPage = () => {
   let sumWidth = 0;
   let overlap = 0.8;
 
+  where.html('');
   title.forEach(function(char) {
     oneDiv = $('<div class="char_div left_side">' + char + '</div>');
     where.append(oneDiv);
