@@ -42,6 +42,14 @@ const startPage = () => {
   // console.log("a");
 };
 
+const rgbToHex = (color) => {
+  const nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
+      r = parseInt(nums[2], 10).toString(16),
+      g = parseInt(nums[3], 10).toString(16),
+      b = parseInt(nums[4], 10).toString(16);
+  return "#" + (r.length == 1 ? "0"+ r : r) + (g.length == 1 ? "0"+ g : g) + (b.length == 1 ? "0"+ b : b);
+};
+
 const setColors = () => {
   const array_colors = ['white', 'gray', 'red', 'fuchsia', 'yellow', 'lime', 'aqua', 'teal',
                         'silver', 'black', 'maroon', 'purple', 'olive', 'green', 'blue', 'navy',
@@ -50,4 +58,4 @@ const setColors = () => {
   $('#colors td').each(function(index) {
     $(this).css('background-color', array_colors[index]);
   });
-}
+};

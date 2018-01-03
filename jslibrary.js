@@ -1,11 +1,3 @@
-const rgbToHex = (color) => {
-  const nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
-      r = parseInt(nums[2], 10).toString(16),
-      g = parseInt(nums[3], 10).toString(16),
-      b = parseInt(nums[4], 10).toString(16);
-  return "#" + (r.length == 1 ? "0"+ r : r) + (g.length == 1 ? "0"+ g : g) + (b.length == 1 ? "0"+ b : b);
-};
-
 
 // TODO: supporting function for makeGrid
 // adding leading zeros to number to build id rows and cells
@@ -82,6 +74,10 @@ Point.prototype.toString = function() {
 };
 Point.prototype.equals = function(p2) {
   return (p2 instanceof Point && this.x === p2.x && this.y === p2.y);
+};
+Point.prototype.copy = function(p2) {
+  this.x = p2.getX();
+  this.y = p2.getY();
 };
 
 // TODO: two Points and array to remember colors before
@@ -311,4 +307,29 @@ Line.prototype.eraseDraw = function() {
       }
     }
   }
+};
+
+const fillArea = (point, colorBase) => {
+  if (colorBase != getColorPixel(point.get())) {
+    return;
+  }
+  let x = point.getX();
+  let y = point.getY();
+  if (x < 0 || y < 0 || x >= $('#input_width').val() || y >= $('#input_height').val()) {
+    return;
+  }
+  setColorPixel(point.get());
+  point.setY(y - 1);
+  fillArea(point, colorBase);
+  point.setY(y + 1);
+  fillArea(point, colorBase);
+  point.setY(y);
+  point.setX(x - 1);
+  fillArea(point, colorBase);
+  point.setX(x + 1);
+  fillArea(point, colorBase);
+
+  point.setY(y);
+  point.setX(x);
+  return;
 };

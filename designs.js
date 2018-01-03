@@ -183,13 +183,13 @@ const validateSize = (sender) => {
         if ( size < 3 ) {
           size = 3;
           height = ((divH - 1) / (size  + 1)) | 0;
-          $('#input_heiiht').val(height);
+          $('#input_height').val(height);
         }
         $('#input_size').val(size);
         //alert for size
       } else {
         height = ((divH - 1) / (size  + 1)) | 0;
-        $('#input_heiiht').val(height);
+        $('#input_height').val(height);
       }
       // alert for height
     }
@@ -283,37 +283,41 @@ const drawPixels = (cell, e) => {
   const type = e.type;
   const btn = e.which;
   //console.log(getColorPixel(cell));
-  // if (type == 'mousedown' || type == 'mouseup' ) {
-  //   console.log(type + '  button=' + e.which );
-  // }
-  if (type == 'mousedown' && btn == 1) {
-    // if (mode === 'draw' || mode === 'line' || mode === 'rect') {
-      if (l.set) {
-        l.drawLine(-1, cell);
-      } else {
-        l.drawLine(cell, cell);
-      }
-    // }
-  }
-  if (type == 'mouseenter' && btn == 1) {
-    if (mode === 'draw') {
-      l.drawLine(-1, cell);
-      l.set = false;
-      l.drawLine(cell, cell);
-    } else {
-      l.drawLine(-1, cell);
+  if (mode === 'clear') {
+    if (type == 'mouseup' ) {
+
     }
-  }
-  if (type == 'mouseup' && btn == 1) {
-    //console.log(l.start.x + "   " + l.stop.x );
-    // if (mode === 'draw' || mode === 'line' || mode === 'rect') {
-      l.set = false;
-    // }
-  }
-  if ((type == 'mousedown' || type == 'mouseenter') && btn == 1) {
-    //setColorPixel(cell);
-    //console.log( $(cell).attr('id') );
-    //console.log( p.getX() + '  ' + p.getY() );
+  } else if (mode === 'fill') {
+    if (type == 'mouseup' && rgbToHex(getColorPixel(cell)) != $('#colorPicker').val()) {
+      l.start.set(cell);
+      fillArea(l.start, getColorPixel(cell));
+    }
+  } else {
+  // mode => draw, line, rect and circle
+    if (type == 'mousedown' && btn == 1) {
+      // if (mode === 'draw' || mode === 'line' || mode === 'rect') {
+        if (l.set) {
+          l.drawLine(-1, cell);
+        } else {
+          l.drawLine(cell, cell);
+        }
+      // }
+    }
+    if (type == 'mouseenter' && btn == 1) {
+      if (mode === 'draw') {
+        l.drawLine(-1, cell);
+        l.set = false;
+        l.drawLine(cell, cell);
+      } else {
+        l.drawLine(-1, cell);
+      }
+    }
+    if (type == 'mouseup' && btn == 1) {
+      //console.log(l.start.x + "   " + l.stop.x );
+      // if (mode === 'draw' || mode === 'line' || mode === 'rect') {
+        l.set = false;
+      // }
+    }
   }
   // if (type == 'mouseenter') {
   //   console.log(type + '  button=' + e.which );
