@@ -331,5 +331,19 @@ const fillArea = (point, colorBase) => {
 
   point.setY(y);
   point.setX(x);
-  return;
+};
+
+const clearRect = (point) => {
+  let x = point.getX();
+  let y = point.getY();
+  for (let col = x - 2; col <= x + 2; col++) {
+    point.setX(col);
+    for (let row = y - 2; row <= y +2; row++) {
+      point.setY(row);
+      $(point.get()).css('background-color', 'white');
+    }
+  }
+
+  point.setY(y);
+  point.setX(x);
 };

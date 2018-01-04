@@ -283,11 +283,7 @@ const drawPixels = (cell, e) => {
   const type = e.type;
   const btn = e.which;
   //console.log(getColorPixel(cell));
-  if (mode === 'clear') {
-    if (type == 'mouseup' ) {
-
-    }
-  } else if (mode === 'fill') {
+  if (mode === 'fill') {
     if (type == 'mouseup' && rgbToHex(getColorPixel(cell)) != $('#colorPicker').val()) {
       l.start.set(cell);
       fillArea(l.start, getColorPixel(cell));
@@ -295,8 +291,11 @@ const drawPixels = (cell, e) => {
   } else {
   // mode => draw, line, rect and circle
     if (type == 'mousedown' && btn == 1) {
-      // if (mode === 'draw' || mode === 'line' || mode === 'rect') {
-        if (l.set) {
+      // if (mode === 'draw' || mode === 'line' || mode === 'rect' || mode === 'clear') {
+        if (mode === 'clear') {
+          l.start.set(cell);
+          clearRect(l.start);
+        } else if (l.set) {
           l.drawLine(-1, cell);
         } else {
           l.drawLine(cell, cell);
@@ -304,7 +303,10 @@ const drawPixels = (cell, e) => {
       // }
     }
     if (type == 'mouseenter' && btn == 1) {
-      if (mode === 'draw') {
+      if (mode === 'clear') {
+        l.start.set(cell);
+        clearRect(l.start);
+      } else if (mode === 'draw') {
         l.drawLine(-1, cell);
         l.set = false;
         l.drawLine(cell, cell);
