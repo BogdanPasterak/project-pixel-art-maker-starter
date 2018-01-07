@@ -10,23 +10,33 @@ body {
   text-align: center;
   display: flex;
   flex-flow: column;
+  background-image: url("UBG.png")
 }
 
 h2 {
-    margin: 0.25em;
+  background-color: #fffa;
+  display: block;
+  width: 200px;
+  margin:auto;
+  padding: 10px 0 3px 0;
 }
 
 #pixel_canvas,
 .cell_canvas {
-    border-collapse: collapse;
-    border: 1px dotted lightgray;
-    margin: 0 auto;
-    padding: 0;
-    background-color: white;
+  border-collapse: collapse;
+  border: 1px dotted lightgray;
+  margin: 0 auto;
+  padding: 0;
+  background-color: white;
+}
+
+#colorPicker {
+  background-color: #fff8;
+  padding: 4px;
 }
 
 input[type=number] {
-    width: 3.5em;
+  width: 3.5em;
 }
 
 input {
@@ -59,7 +69,7 @@ img, embed, object, video {
 
 #div_canvas {
   flex: 1 1 auto;
-  background-color: white;
+  /* background-color: white; */
   margin: 0;
   border: 0;
   padding: 0;
@@ -79,7 +89,6 @@ img, embed, object, video {
 .wrap_div {
   display: inline-flex;
   flex-wrap: wrap;
-  border: 1px solid #eee;
 }
 
 .quarter {
@@ -91,18 +100,16 @@ img, embed, object, video {
 }
 
 .min_box {
-  border: 1px solid #ccc;
   margin: 2px;
-  padding: 1px;
+  padding: 2px;
   align-content: center;
   min-width: 55px;
   min-height: 15px;
 }
 
 .mode_box {
-  border: 1px solid #caa;
   margin: 2px;
-  padding: 10px 1px;
+  padding: 2px;
   align-content: center;
   min-width: 90px;
   min-height: 15px;
@@ -120,6 +127,10 @@ img, embed, object, video {
   /* transition: transform 3s; */
   transition-timing-function: linear;
   animation-duration: 1s;
+}
+
+.bg_white {
+  background-color: #fffa;
 }
 
 .left_side {
