@@ -1,33 +1,31 @@
-
 // TODO: supporting function for makeGrid
 // adding leading zeros to number to build id rows and cells
 const add0 = (number) => {
   return ((number < 10 )?'00':(number < 100)?'0' : '') + number.toString();
 };
 
-// TODO: get index horizontal of cell from itself id
+// TODO: Several auxiliary functions for handling canvas cells
+// get index horizontal of cell from itself id
 const getW = (cell) => {
   return parseInt( $(cell)[0].id.substr(5, 3) );
 };
 
-// TODO: get index vertical of cell from itself id
+//  get index vertical of cell from itself id
 const getH = (cell) => {
-  //console.log(cell + '  ' +  cell.id );
   return parseInt( $(cell)[0].id.substr(1, 3) );
 };
 
-
-// TODO:
+// get color
 const getColorPixel = (cell) => {
   return $(cell).css('background-color');
 };
 
-// TODO:
+// set color
 const setColorPixel = (cell) => {
   $(cell).css('background-color', $('#colorPicker').val());
 };
 
-// TODO:
+// get and set color
 const getSetColorPixel = (cell) => {
   let colorP = getColorPixel(cell);
   setColorPixel(cell);
@@ -35,7 +33,7 @@ const getSetColorPixel = (cell) => {
 }
 
 
-// TODO: point(x,y) or point(cell)
+// TODO: A point object and a chain of function prototypes for it
 const Point = function () {
   this.x = 0;
   this.y = 0;
@@ -80,7 +78,9 @@ Point.prototype.copy = function(p2) {
   this.y = p2.getY();
 };
 
-// TODO: two Points and array to remember colors before
+
+// TODO: An object for drawing figures based on two points
+// two Points and array to remember colors before
 // set - boolean - drawn and remembered colors before
 const Line = function () {
   this.start = new Point();
@@ -88,17 +88,21 @@ const Line = function () {
   this.colors = [];
   this.set = false;
 };
+
 Line.prototype.toString = function() {
   return 'Line={\n\t' + this.start.toString() + '\n\t' + this.stop.toString() + '\n\tBoolean set=' +
           this.set + '  Array colors length=' + this.colors.length + '\n}';
 };
+
 // TODO: draws lines in two stages, erase if she was already
 // and paints until the new end
 Line.prototype.drawLine = function(startCell, stopCell) {
+  // if the object was drawn, it is the first to swab it
   if (this.set) {
     this.eraseDraw();
   }
   this.set = false;
+  // set new points
   if (startCell != -1) {
     this.start.x = getW(startCell);
     this.start.y = getH(startCell);
@@ -107,18 +111,17 @@ Line.prototype.drawLine = function(startCell, stopCell) {
     this.stop.x = getW(stopCell);
     this.stop.y = getH(stopCell);
   }
+  // and draw
   this.eraseDraw();
   this.set = true;
 };
 
 // TODO: decoding next points and drawing or smearing
 Line.prototype.eraseDraw = function() {
-  //console.log( this.set );
   // only one point all mode
   if (this.start.equals(this.stop)) {
-    const color = (this.set) ? this.colors[0] : $('#colorPicker').val();
+    let color = (this.set) ? this.colors[0] : $('#colorPicker').val();
     this.colors[0] = this.start.getSetColor(color);
-    //console.log('po jednym punkcie');
   } else {
   // two points or more
     let point = new Point();
@@ -126,7 +129,7 @@ Line.prototype.eraseDraw = function() {
     const dysY = (this.stop.y - this.start.y > 0) ? this.stop.y - this.start.y : this.start.y - this.stop.y;
     let color;
     if (dysX < 2 && dysY < 2){
-    // only start and stop , all mode
+    // only start and stop , all mode, two neighboring points
       color = (this.set) ? this.colors[0] : $('#colorPicker').val();
       this.colors[0] = this.start.getSetColor(color);
       color = (this.set) ? this.colors[1] : $('#colorPicker').val();
@@ -141,7 +144,8 @@ Line.prototype.eraseDraw = function() {
         this.colors[3] = point.getSetColor(color);
       }
     } else {
-    // line
+    // if the distance is greater
+      // several auxiliary fixed and variable
       const moreX = dysX >= dysY;
       const startLess = (moreX) ? (this.start.x < this.stop.x) : (this.start.y < this.stop.y);
       const x1 = (startLess) ? this.start.x : this.stop.x;
@@ -150,6 +154,8 @@ Line.prototype.eraseDraw = function() {
       const y2 = (startLess) ? this.stop.y : this.start.y;
       const plus = (moreX) ? (y2 > y1) : (x2 > x1);
       let x, y;
+      //  Circle drawing procedure
+      // calculation for 1/8 and copying with the change of sign and position 8 times
       if (mode === 'circle') {
         const r2 = dysX * dysX + dysY * dysY;
         //console.log(r2);
@@ -218,18 +224,17 @@ Line.prototype.eraseDraw = function() {
           x++;
         } while (x < y);
 
-
+      // if not, check whether it is a horizontal or vertical line
       } else if (dysX == 0 || dysY == 0) {
-      // vertical or horizontal line and rect
         const vert = (dysX == 0);
         for (let i = 0; i <= ((vert) ? dysY : dysX); i++) {
           x = x1 + ((vert) ? 0 : i);
           y = y1 + ((vert) ? i : 0);
           point.setXY(x, y);
-          //console.log(point.toString() + '  ' + x + '  ' + y + '  ' + i);
           color = (this.set) ? this.colors[i] : $('#colorPicker').val();
           this.colors[i] = point.getSetColor(color);
         }
+      // if rectangle 4 straight lines
       } else if (mode === 'rect') {
         //console.log('rect');
         const xl = (this.start.x < this.stop.x) ? this.start.x: this.stop.x;
@@ -271,6 +276,8 @@ Line.prototype.eraseDraw = function() {
         }
       } else {
       // diagonal lines
+      // along the longer coordinate, calculate the second coordinate
+      // only for half line, second half drawn mirror
         let g = (moreX) ? dysY + 1: dysX + 1;
         let d = (moreX) ? dysX : dysY;
         let gl = 0;
@@ -309,6 +316,9 @@ Line.prototype.eraseDraw = function() {
   }
 };
 
+// TODO: filling the area with a uniform color
+// recursive procedure, checks whether this point should be painted over,
+// she paints and calls herself to 4 neighboring points
 const fillArea = (point, colorBase) => {
   if (colorBase != getColorPixel(point.get())) {
     return;
@@ -333,6 +343,7 @@ const fillArea = (point, colorBase) => {
   point.setX(x);
 };
 
+// TODO: paints a 5x5 square white
 const clearRect = (point) => {
   let x = point.getX();
   let y = point.getY();

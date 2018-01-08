@@ -2,10 +2,10 @@
 //let selectColor;
 //let widthGrid = 0, heightGrid = 0;
 //let p = new Point();
-let l = new Line();
-let mode = 'draw';
-let myColors = [0, 0, 0, 0, 0, 0, 0, 0];
-const isTouch = ('ontouchstart' in window);
+let l = new Line(); // Object Line for drawing operations
+let mode = 'draw'; // variable mode to determine the drawing mode
+let myColors = [0, 0, 0, 0, 0, 0, 0, 0]; // an array of 8 variables to redefine the user colors
+// const isTouch = ('ontouchstart' in window); // fixed boolean for touch devices
 
 // TODO: run once until DOM is ready
 $( function () {
@@ -26,23 +26,22 @@ $( function () {
     drawPixels(this, event);
   });
 
-  // no more this variable
   // TODO: event for change color
   $('#colorPicker').change( function () {
-    //selectColor = $(this).val();
     let index = 0;
     let min = myColors[index];
+    // inserting the selected color into the least used field in the third row
     myColors.forEach(function(e, i) {
       if (e < min){
         min = e;
         index = i;
       }
     });
-    // console.log(index);
     $('#' + index).css('background-color', $('#colorPicker').val());
     myColors[index]++;
   });
 
+  // TODO: event for choose a color from the board
   $('#colors td').click(function() {
     $('#colorPicker').val(rgbToHex($(this).css('background-color')));
     if ($(this).parent().is($('#arrayColors'))) {
@@ -50,12 +49,12 @@ $( function () {
     }
   });
 
-  // TODO: validation size of Grid
+  // TODO: validation size of Grid (width, heigh or size)
   $('input[type="number"]').change( function () {
     validateSize(this);
   });
 
-  // TODO:
+  // TODO: blocking the size of the grid
   $('#input_hold').change( function () {
     if ( $(this).is(':checked') ) {
       $('#input_size').attr('readonly', true);
@@ -66,7 +65,7 @@ $( function () {
     }
   });
 
-  // TODO:
+  // TODO: selection of drawing mode
   $("input[type='radio'][name='mode']").change( function () {
     mode = $(this).val();
   });
@@ -78,9 +77,7 @@ $( function () {
     startPage();
   });
 
-  // TODO: Demo start
-  //startPage();
-
+  // color setting
   setColors();
 
   // initial drawing grid
@@ -153,11 +150,8 @@ const validateSize = (sender) => {
   const divW = parseInt($('#div_canvas').css('width'));
   const divH = parseInt($('#div_canvas').css('height'));
 
-  //console.log(sender)
-
   // start , restart validacion
   if ( sender === 'RESIZE' ) {
-
     if ( (size + 1) * width + 1 > divW ) {
       // try reduce size cells if not hold
       if (! $('#input_hold').is(':checked')){
@@ -168,13 +162,10 @@ const validateSize = (sender) => {
           $('#input_width').val(width);
         }
         $('#input_size').val(size);
-        //alert for size
       } else {
         width = ((divW - 1) / (size  + 1)) | 0;
         $('#input_width').val(width);
-        //console.log("s="+size+"  w="+width+"  sum="+((size+1)*width+1));
       }
-      // alert for width
     }
     if ( (size + 1) * height + 1 > divH ) {
       // try reduce size cells if not hold
@@ -186,16 +177,11 @@ const validateSize = (sender) => {
           $('#input_height').val(height);
         }
         $('#input_size').val(size);
-        //alert for size
       } else {
         height = ((divH - 1) / (size  + 1)) | 0;
         $('#input_height').val(height);
       }
-      // alert for height
     }
-
-
-
 
   // if imput size event
   } else if ( $(sender).attr('id') == 'input_size' ) {
@@ -205,18 +191,20 @@ const validateSize = (sender) => {
       else if ( size > 99 ) { size = 99; }
       else { size = parseInt($('#r000c000').css('width')); } // previous value
       $(sender).val(size);
-      // alert in size
+      blink('#input_size','red');
     }
     // too big
     if ( (size + 1) * width + 1 > divW ) {
       size = (((divW - 1) / width) | 0) - 1; // Math.floor() but faster
       $(sender).val(size);
-      // alert in width
+      blink('#input_size','red');
+      blink('#input_width','yellow');
     }
     if ( (size + 1) * height + 1 > divH ) {
       size = (((divH - 1) / height) | 0) - 1;
       $(sender).val(size);
-      // alert in height
+      blink('#input_size','red');
+      blink('#input_height','yellow');
     }
 
   // if imput width event
@@ -226,7 +214,7 @@ const validateSize = (sender) => {
       else if ( width > 999 ) { width = 999; }
       else { width = getW($('td:last')) + 1; } // previous value
       $(sender).val(width);
-      // alert in width
+      blink('#input_width','red');
     }
     if ( (size + 1) * width + 1 > divW ) {
       // try reduce size cells if not hold
@@ -238,13 +226,12 @@ const validateSize = (sender) => {
           $(sender).val(width);
         }
         $('#input_size').val(size);
-        //alert for size
+        blink('#input_size','green');
       } else {
         width = ((divW - 1) / (size  + 1)) | 0;
         $(sender).val(width);
-        //console.log("s="+size+"  w="+width+"  sum="+((size+1)*width+1));
       }
-      // alert for width
+      blink('#input_width','green');
     }
 
   // if imput height event
@@ -254,7 +241,7 @@ const validateSize = (sender) => {
       else if ( height > 999 ) { height = 999; }
       else { height = getH($('td:last')) + 1; } // previous value
       $(sender).val(height);
-      // alert in height
+      blink('#input_height','red');
     }
     if ( (size + 1) * height + 1 > divH ) {
       // try reduce size cells if not hold
@@ -266,15 +253,14 @@ const validateSize = (sender) => {
           $(sender).val(height);
         }
         $('#input_size').val(size);
-        //alert for size
+        blink('#input_size','green');
       } else {
         height = ((divH - 1) / (size  + 1)) | 0;
         $(sender).val(height);
       }
-      // alert for height
+      blink('#input_height','green');
     }
   }
-  // console.log(divW + '  ' + divH + '  ' + size);
   makeGrid();
 };
 
@@ -282,7 +268,7 @@ const validateSize = (sender) => {
 const drawPixels = (cell, e) => {
   const type = e.type;
   const btn = e.which;
-  //console.log(getColorPixel(cell));
+
   if (mode === 'fill') {
     if (type == 'mouseup' && rgbToHex(getColorPixel(cell)) != $('#colorPicker').val()) {
       l.start.set(cell);
@@ -291,22 +277,23 @@ const drawPixels = (cell, e) => {
   } else {
   // mode => draw, line, rect and circle
     if (type == 'mousedown' && btn == 1) {
-      // if (mode === 'draw' || mode === 'line' || mode === 'rect' || mode === 'clear') {
-        if (mode === 'clear') {
-          l.start.set(cell);
-          clearRect(l.start);
-        } else if (l.set) {
-          l.drawLine(-1, cell);
-        } else {
-          l.drawLine(cell, cell);
-        }
-      // }
+      if (mode === 'clear') {
+        l.start.set(cell);
+        clearRect(l.start);
+      } else if (l.set) {
+        // if you left the area !!!
+        l.drawLine(-1, cell);
+      } else {
+        // start new line
+        l.drawLine(cell, cell);
+      }
     }
     if (type == 'mouseenter' && btn == 1) {
       if (mode === 'clear') {
         l.start.set(cell);
         clearRect(l.start);
       } else if (mode === 'draw') {
+        // draw lines and start a new one if draw mode!!!
         l.drawLine(-1, cell);
         l.set = false;
         l.drawLine(cell, cell);
@@ -315,13 +302,8 @@ const drawPixels = (cell, e) => {
       }
     }
     if (type == 'mouseup' && btn == 1) {
-      //console.log(l.start.x + "   " + l.stop.x );
-      // if (mode === 'draw' || mode === 'line' || mode === 'rect') {
-        l.set = false;
-      // }
+      // end drawing
+      l.set = false;
     }
   }
-  // if (type == 'mouseenter') {
-  //   console.log(type + '  button=' + e.which );
-  // }
 }

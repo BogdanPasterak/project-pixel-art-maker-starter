@@ -37,6 +37,7 @@ h2 {
 
 input[type=number] {
   width: 3.5em;
+  animation-duration: 3s;
 }
 
 input {
@@ -67,9 +68,9 @@ img, embed, object, video {
   width: 25px;
 }
 
+/* assigning the maximum possible size for a div with a canvas for drawing */
 #div_canvas {
   flex: 1 1 auto;
-  /* background-color: white; */
   margin: 0;
   border: 0;
   padding: 0;
@@ -82,10 +83,12 @@ img, embed, object, video {
   margin: 0;
 }
 
+/* the remaining div only takes as much as needed */
 .flex_div {
   flex: 0 1 auto;
 }
 
+/* classes for smaller boxes */
 .wrap_div {
   display: inline-flex;
   flex-wrap: wrap;
@@ -133,18 +136,20 @@ img, embed, object, video {
   background-color: #fffa;
 }
 
+/* starting position for the letters of the title */
 .left_side {
   transform: rotateY(180deg);
 }
 
+/* shortening wide rows */
 @media screen and (max-width: 550px) {
   .quarter {  max-width: 65px; }
 }
-
 @media screen and (max-width: 600px) {
   .full {  max-width: 296px; }
 }
 
+/* letter animation in two stages */
 @keyframes turn_font1 {
   from {transform: rotateY(180deg);}
   to {transform: rotateY(90deg);}
@@ -152,4 +157,17 @@ img, embed, object, video {
 @keyframes turn_font2 {
   from {transform: rotateY(90deg);}
   to {transform: rotateY(0deg);}
+}
+/* blink animation */
+@keyframes blink_red {
+  from {background-color: red;}
+  to {background-color: white;}
+}
+@keyframes blink_green {
+  from {background-color: green;}
+  to {background-color: white;}
+}
+@keyframes blink_yellow {
+  from {background-color: yellow;}
+  to {background-color: white;}
 }
