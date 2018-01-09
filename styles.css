@@ -10,7 +10,7 @@ body {
   text-align: center;
   display: flex;
   flex-flow: column;
-  background-image: url("UBG.png")
+  background-image: url("UBG.png");
 }
 
 h2 {
