@@ -6,6 +6,7 @@ let l = new Line(); // Object Line for drawing operations
 let mode = 'draw'; // variable mode to determine the drawing mode
 let myColors = [0, 0, 0, 0, 0, 0, 0, 0]; // an array of 8 variables to redefine the user colors
 // const isTouch = ('ontouchstart' in window); // fixed boolean for touch devices
+let mouseButton = 0;
 
 // TODO: run once until DOM is ready
 $( function () {
@@ -265,9 +266,14 @@ const validateSize = (sender) => {
 };
 
 // TODO: main draw function
-const drawPixels = (cell, e) => {
-  const type = e.type;
-  const btn = e.which;
+const drawPixels = (cell, event) => {
+  const type = event.type;
+  if (type == 'mousedown') {
+    mouseButton = event.which;
+  } else if (type == 'mouseup') {
+    mouseButton = 0;
+  }
+  const btn = mouseButton;
 
   if (mode === 'fill') {
     if (type == 'mouseup' && rgbToHex(getColorPixel(cell)) != $('#colorPicker').val()) {
@@ -301,9 +307,9 @@ const drawPixels = (cell, e) => {
         l.drawLine(-1, cell);
       }
     }
-    if (type == 'mouseup' && btn == 1) {
+    if (type == 'mouseup') {
       // end drawing
       l.set = false;
     }
   }
-}
+};
