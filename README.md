@@ -17,11 +17,19 @@ This repository is the starter code for _all_ Udacity students. Therefore, we mo
 
 
 
-## Bogdan Pasterak ##
+# Bogdan Pasterak
 
 Udacity course student - Google Developer Challenge Scholarship: Front-End Web Dev.
 
-# My work
+## Instructions
+
+### A working version also on [CodePen](https://codepen.io/BogdanPasterak/pen/YYEmRd)
+### and on [GitHub Pages](https://bogdanpasterak.github.io/project-pixel-art-maker-starter/)
+### Additional questions please [contact me](mailto:bogdanpasterak@gmail.com)
+
+ Detailed explanations also inside the code in the comments.
+
+## My work
 
 - I started with performing the tasks listed in the specification.
 - I quickly noticed some errors in this project.
@@ -74,9 +82,4 @@ Ad 4. The reaction to change the size is:
   - folding (shortening) row with selection of drawing mode.
   - plans to operate mobile devices.
 
-
-# A working version also on CodePen (https://codepen.io/BogdanPasterak/pen/YYEmRd)
-# Detailed explanations also inside the code in the comments.
-# Additional questions please contact me (mailto:bogdanpasterak@gmail.com)
-
-# I wish you fun Bogdan Pasterak
+## I wish you fun Bogdan Pasterak
