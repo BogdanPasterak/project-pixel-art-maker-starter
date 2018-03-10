@@ -10,7 +10,7 @@ body {
   text-align: center;
   display: flex;
   flex-flow: column;
-  background-image: url("UBG.png");
+  background-image: url("../img/UBG.png");
 }
 
 h2 {
@@ -127,7 +127,6 @@ img, embed, object, video {
   top: -14px;
   background-color: rgba(255, 255, 255, 0.7);
   transform: rotateY(0deg);
-  /* transition: transform 3s; */
   transition-timing-function: linear;
   animation-duration: 1s;
 }

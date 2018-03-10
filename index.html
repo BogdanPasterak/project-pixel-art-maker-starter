@@ -2,27 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="author" content="Bogdan Pasterak">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Pixel Art Maker!</title>
-  <link rel="stylesheet" href="styles.css">
-  <!-- qQuery and my three sctipts -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="jslibrary.js"></script>
-  <script src="demo.js"></script>
-  <script src="designs.js"></script>
-  <!-- This script reads google fonts and then starts my procedure startPage() from the demo.js script -->
-  <script>
-    WebFontConfig = { google: { families: [ 'Monoton' ] } , active : function() { startPage(); } };
-    (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-    })();
-  </script>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <!-- div title is dynamically built in startPage(). Here is only the reservation of the place. -->
@@ -116,5 +100,12 @@
   <div class="flex_div">
     <p>Bogdan Pasterak</p>
   </div>
+  <!-- qQuery and my three sctipts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="js/jslibrary.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/designs.js"></script>
+  <!-- This script reads google fonts and then starts my procedure startPage() from the demo.js script -->
+  <script src="js/WebFontConfig.js"></script>
 </body>
 </html>
